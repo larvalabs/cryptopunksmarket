@@ -1,0 +1,8 @@
+.bg-punk-default {
+    background: #638596;
+}
+
+.img-scale-pixelated {
+    image-rendering: -moz-crisp-edges;
+    image-rendering: pixelated;
+}
