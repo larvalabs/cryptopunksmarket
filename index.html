@@ -18,7 +18,7 @@
 
 <div id="main_content" class="bg-white">
     <!-- Bid Modal -->
-    <div @click="closeDialogs()" v-show="dialogStateShowBid" id="modal-bid" class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true" v-cloak>
+    <div v-show="dialogState.showBid" id="modal-bid" class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true" v-cloak>
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
 
@@ -38,52 +38,6 @@
                             You are placing a new bid on Punk #{{ punkIndex }}
                         </h3>
                         <div class="mt-10 text-left">
-                            <div class="flex">
-                                <div class="mr-4 flex-shrink-0 self-center">
-                                    <img :src=punkImageUrl alt="Cryptopunk image" class="w-16 h-16 object-center object-cover sm:rounded-lg img-scale-pixelated bg-punk-default">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg font-bold">Current Market Status</h4>
-                                    <p class="mt-1">
-                                    <span class="flex items-center truncate space-x-3">
-                                    <span class="w-2.5 h-2.5 flex-shrink-0 rounded-full bg-red-500"
-                                          aria-hidden="true"></span>
-                                    <span class="font-medium truncate text-sm leading-6">
-                                      For sale
-                                      <span class="truncate font-normal text-gray-500">by owner for</span>
-                                        <span><span class="text-gray-900 font-medium">2.3K</span> ETH</span>
-                                        <span class="truncate font-normal text-gray-500">($91M USD)</span>
-                                      </span>
-                                  </span>
-                                    </p>
-                                    <p class="mt-0">
-                                    <span class="flex items-center truncate space-x-3">
-                                    <span class="w-2.5 h-2.5 flex-shrink-0 rounded-full bg-green-500"
-                                          aria-hidden="true"></span>
-                                    <span class="font-medium truncate text-sm leading-6">
-                                      Bid
-                                      <span class="truncate font-normal text-gray-500">by 0x46aff8 for</span>
-                                        86.95 ETH
-                                        <span class="truncate font-normal text-gray-500">($381K USD)</span>
-                                      </span>
-                                  </span>
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="mt-10 mb-3 w-full border-t border-gray-300"></div>
-
-                            <div class="">
-                                <h3 class="text-lg leading-6 font-medium text-gray-900">
-                                    New Bid Information
-                                </h3>
-                                <!--
-                                                            <p class="mt-1 text-sm text-gray-500">
-                                                                Enter the amount of your new bid.
-                                                            </p>
-                                -->
-                            </div>
-
                             <form class="mt-5 space-y-6" action="#" method="POST">
                                 <div class="sm:col-span-4">
                                     <label for="bidValueEther" class="block text-sm font-medium text-gray-700">
@@ -93,7 +47,7 @@
                                     <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">
                                       Ξ
                                     </span>
-                                        <input type="number" name="bidValueEther" id="bidValueEther" placeholder="0"
+                                        <input v-model="bidDialog.bidAmountEther" type="number" name="bidValueEther" id="bidValueEther" placeholder="0"
                                                class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300">
                                     </div>
                                 </div>
@@ -105,7 +59,7 @@
                                     <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">
                                       $
                                     </span>
-                                        <input disabled type="number" name="bidValueUSD" id="bidValueUSD" placeholder="0" class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300">
+                                        <input disabled v-model="bidAmountUsd" type="text" name="bidValueUSD" id="bidValueUSD" placeholder="0" class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300">
                                     </div>
                                 </div>
                             </form>
@@ -129,9 +83,9 @@
                                     <h4 class="text-lg font-bold">
                                         <span class="truncate font-normal text-gray-500">You are placing a new bid of</span>
                                         <br>
-                                        86.95 ETH <span class="truncate font-normal text-gray-500">($381K USD)</span>
+                                        <value-display :amount-ether="bidDialog.bidAmountEther"></value-display>
                                         <br>
-                                        <span class="truncate font-normal text-gray-500">This bid is </span> 17% above current floor.
+                                        <span class="truncate font-normal text-gray-500">This bid is </span> <floor-percent-display :amount-ether="bidDialog.bidAmountEther"></floor-percent-display>
                                     </h4>
                                 </div>
                             </div>
@@ -274,7 +228,7 @@
                                     </span>
                                 </dt>
                                 <dd class="mt-1 text-xl text-gray-900 font-semibold">
-                                    <span v-show="isPunkForSaleToAnyone || isPunkForSaleToSpecificAddress" v-cloak><value-display :amount="state.punkData.offerValue" :short="true"></value-display></span>
+                                    <span v-show="isPunkForSaleToAnyone || isPunkForSaleToSpecificAddress" v-cloak><value-display :amount-wei="state.punkData.offerValue" :short="true"></value-display></span>
                                     <span v-show="isPunkNotForSale" v-cloak></span>
                                 </dd>
                                 <div v-show="shouldShowBuyButton" class="mt-5 flex sm:flex-col1">
@@ -305,7 +259,7 @@
                                     </span>
                                 </dt>
                                 <dd class="mt-1 text-xl text-gray-900 font-semibold">
-                                    <span v-if="doesPunkHaveBid" v-cloak><value-display :amount="state.punkData.bidValue" :short="true"></value-display></span>
+                                    <span v-if="doesPunkHaveBid" v-cloak><value-display :amount-wei="state.punkData.bidValue" :short="true"></value-display></span>
                                     <span v-else v-cloak></span>
                                 </dd>
 
@@ -521,7 +475,12 @@
                 state: Cryptopunks.PunkState,
                 punkIndex: punkIndexParam,
                 ownerAddress: '',
-                dialogStateShowBid: false,
+                dialogState: {
+                    showBid: false,
+                },
+                bidDialog: {
+                    bidAmountEther: 0,
+                },
             },
             created: function() {
                 var self = this;
@@ -595,13 +554,16 @@
                 doesPunkHaveBid: function () {
                     return this.state.hasBid;
                 },
+                bidAmountUsd: function () {
+                    return Cryptopunks.formatUsd(Cryptopunks.etherToUsd(this.bidDialog.bidAmountEther), 0);
+                },
             },
             methods: {
                 closeDialogs: function () {
-                    this.dialogStateShowBid = false;
+                    this.dialogState.showBid = false;
                 },
                 showBidDialog: function () {
-                    this.dialogStateShowBid = true;
+                    this.dialogState.showBid = true;
                 },
             },
         });

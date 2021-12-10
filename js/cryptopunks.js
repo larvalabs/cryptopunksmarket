@@ -11,6 +11,9 @@ Cryptopunks.currentPunkIndex = -1;
 
 Cryptopunks.gasPrice = 40 * 1000000001;
 
+// todo Load from API
+Cryptopunks.floorPriceEther = 68.0;
+
 Cryptopunks.PunkState = {
     agreedToTermsStatus: 0, // 0 = not yet agreed, 1 = agreed, 2 = denied
 	web3Queried: false,
@@ -68,12 +71,12 @@ Vue.component('transaction-link', {
     template: '<a v-bind:href="\'https://etherscan.io/tx/\'+hash">{{hash.substring(0,8)}}</a>'
 });
 
-function abbrNum(number, decPlaces) {
+Cryptopunks.abbrNum = function (number, decPlaces) {
     // 2 decimal places => 100, 3 => 1000, etc
     decPlaces = Math.pow(10,decPlaces);
 
     // Enumerate number abbreviations
-    var abbrev = [ "k", "m", "b", "t" ];
+    var abbrev = [ "K", "M", "B", "T" ];
 
     // Go through the array backwards, so we do the largest first
     for (var i=abbrev.length-1; i>=0; i--) {
@@ -98,43 +101,94 @@ function abbrNum(number, decPlaces) {
     return number;
 }
 
+Cryptopunks.etherToUsd = function (etherValue) {
+    return etherValue * Cryptopunks.ETHER_CONVERSION.USD;
+}
+
+Cryptopunks.formatUsd = function (usdValue, fractionDigits) {
+    if (!fractionDigits) fractionDigits = 2;
+    var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: fractionDigits,
+        maximumFractionDigits: fractionDigits,
+    });
+    if (formatter) {
+        usdValStr = formatter.format(usdValue);
+    }
+    return usdValStr;
+}
+
+Vue.component('floor-percent-display', {
+    props: ['amountWei', 'amountEther', 'short'],
+    computed: {
+        etherValue: function () {
+            if (this.amountEther) {
+                return this.amountEther;
+            } else if (this.amountWei) {
+                return parseFloat(web3.utils.fromWei(""+this.amountWei, 'ether'))
+            }
+            return 0;
+        },
+        floorPercentMessage: function () {
+            const fraction = this.etherValue / Cryptopunks.floorPriceEther;
+            if (fraction > 1) {
+                return ((fraction-1) * 100).toFixed(0) + "% above current floor.";
+            } else {
+                return ((1-fraction) * 100).toFixed(0) + "% below current floor.";
+            }
+        },
+    },
+    template: '<span>{{floorPercentMessage}}</span>'
+})
+
 Vue.component('value-display', {
     data: function() {
         return {
             etherConversion: Cryptopunks.ETHER_CONVERSION
         };
     },
-    props: ['amount', 'short'],
+    props: ['amountWei', 'amountEther', 'short'],
     computed: {
         valueStr: function() {
-            var ether = parseFloat(web3.utils.fromWei(""+this.amount, 'ether'));
-            var usdVal = (ether * this.etherConversion.USD);
+            if (amountWei) {
+                this.amountEther = parseFloat(web3.utils.fromWei(""+this.amountWei, 'ether'));
+            }
+            var usdVal = Cryptopunks.etherToUsd(amountEther);
             var fractionDigits = 2;
             if (this.short) fractionDigits = 0;
-            var usdValStr = '$'+abbrNum(usdVal, fractionDigits);
-
-
-/*
-            var formatter = new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: fractionDigits,
-                maximumFractionDigits: fractionDigits,
-            });
-            if (formatter) {
-                usdValStr = formatter.format(usdVal);
-            }
-*/
+            var usdValStr = '$'+Cryptopunks.abbrNum(usdVal, fractionDigits);
 
             // The divide by 1 here removes trailing zeros
             if (this.short) {
-                return '' + abbrNum(ether, 4) + ' Ξ (' + usdValStr + ')';
+                return '' + Cryptopunks.abbrNum(amountEther, 4) + ' Ξ (' + usdValStr + ')';
             } else {
-                return '' + abbrNum(ether, 4) + ' ETH (' + usdValStr + ' USD)';
+                return '' + Cryptopunks.abbrNum(amountEther, 4) + ' ETH (' + usdValStr + ' USD)';
             }
-        }
+        },
+        amount: function () {
+            if (this.amountEther) {
+                return web3.utils.toWei(""+this.amountEther, 'ether');
+                // return parseFloat(web3.utils.fromWei(""+this.amountWei, 'ether'));
+            } else if (this.amountWei) {
+                return this.amountWei;
+            }
+            return 0;
+        },
+        etherValue: function () {
+            return parseFloat(web3.utils.fromWei(""+this.amount, 'ether'));
+        },
+        shortEtherValue: function () {
+            return Cryptopunks.abbrNum(this.etherValue, 4);
+        },
+        shortUSDValue: function () {
+            var fractionDigits = 2;
+            if (this.short) fractionDigits = 0;
+            var usdVal = (this.etherValue * this.etherConversion.USD);
+            return Cryptopunks.abbrNum(usdVal, fractionDigits);
+        },
     },
-    template: '<span>{{valueStr}}</span>'
+    template: '<span><span>{{shortEtherValue}} Ξ</span> <span class="truncate font-normal text-gray-500">(${{shortUSDValue}})</span></span>'
 });
 
 var panel1 = new Vue({

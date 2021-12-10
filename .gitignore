@@ -1,0 +1,24 @@
+.DS_Store
+.shelf
+
+# Idea folder project related:
+
+# User-specific stuff:
+.idea/
+.ideaDataSources
+dataSources
+*.iws
+*.iml
+*.ids
+*.ipr
+
+# Node stuff
+node_modules
+npm-debug.log
+
+# Webpack output
+/public/dist/
+
+# Environment
+.env.dev
+.env
