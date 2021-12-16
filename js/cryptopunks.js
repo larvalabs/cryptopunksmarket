@@ -697,31 +697,33 @@ Cryptopunks.offerPunkForSale = function(index, amount, sendingCallback, successC
 	return true;
 };
 
-Cryptopunks.offerPunkForSaleToAddress = function(index, amount, address) {
+Cryptopunks.offerPunkForSaleToAddress = function(index, amount, address, sendingCallback, successCallback, errorCallback) {
     if (!amount || amount == 0) {
         return false;
     }
 	if (address) {
-		console.log("Offering to sale to address '" + address + "'");
-		Cryptopunks.punkContract.offerPunkForSaleToAddress(index, amount, address, {
-			gas: 200000,
-			gasPrice: Cryptopunks.gasPrice
-		}, function (error, result) {
-			if (!error) {
-				console.log(result);
-				console.log("Success!");
-				Cryptopunks.trackTransaction("Offer " + index, index, result);
-			} else {
-				console.log(error);
-				console.log("Failure.");
-				Cryptopunks.showFailure("Offer " + index, index);
-			}
-		});
-	} else {
-		Cryptopunks.offerPunkForSale(index, amount);
-	}
-	return true;
-};
+        console.log("Offering to sale to address '" + address + "'");
+        Cryptopunks.punkContract.methods.offerPunkForSaleToAddress(index, amount, address).send({
+            from: Cryptopunks.PunkState.account,
+            gas: 200000,
+            gasPrice: Cryptopunks.gasPrice
+        })
+            .on('sending', function () {
+                if (sendingCallback) sendingCallback();
+            })
+            .once('receipt', function (receipt) {
+                console.log(receipt);
+                console.log("Offer successful.");
+                if (successCallback) successCallback(receipt);
+            })
+            .on('error', function (error, receipt) {
+                console.log(error);
+                console.log("Offer failed.");
+                if (errorCallback) errorCallback(error);
+            });
+    }
+    return true;
+}
 
 Cryptopunks.punkNoLongerForSale = function(index, sendingCallback, successCallback, errorCallback) {
     Cryptopunks.punkContract.methods.punkNoLongerForSale(index).send({from: Cryptopunks.PunkState.account, gas: 200000, gasPrice: Cryptopunks.gasPrice})

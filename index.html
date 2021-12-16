@@ -224,6 +224,22 @@
                                         <input disabled v-model="offerAmountUsd" type="text" placeholder="0" class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300">
                                     </div>
                                 </div>
+                                <div class="sm:col-span-4">
+                                    <label for="offerValueEther" class="block text-sm font-medium text-gray-700">
+                                        Only Allow Punk to Be Bought By Address
+                                    </label>
+                                    <div class="mt-1 sm:mt-0 sm:col-span-2">
+                                        <input v-model="offerDialog.onlyOfferToAddress" type="text" name="onlyOfferToAddress" placeholder="0x1234..." class="block max-w-lg w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md">
+                                    </div>
+                                </div>
+                                <div class="sm:col-span-4">
+                                    <label for="bidValueUSD" class="block text-sm font-medium text-gray-700">
+                                        Only Offer to Address Status
+                                    </label>
+                                    <div class="mt-1 sm:mt-0 sm:col-span-2">
+                                        <input disabled v-model="offerToAddressStatusMessage" type="text" class="block max-w-lg w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md">
+                                    </div>
+                                </div>
                             </form>
 
                             <div class="mt-10 mb-3 w-full border-t border-gray-300"></div>
@@ -236,10 +252,9 @@
                                 </div>
                                 <div>
                                     <h4 class="text-lg font-bold">
-                                        <span class="truncate font-normal text-gray-500">You are offering Cryptopunk #{{ punkIndex }} for sale for</span>
-                                        <br>
+                                        <span class="truncate font-normal text-gray-500">You are offering</span> Cryptopunk #{{ punkIndex }} <span class="truncate font-normal text-gray-500">for sale for</span>
                                         <value-display :amount-ether="offerDialog.offerAmountEther"></value-display>
-                                        <br>
+                                        <span v-show="!onlyOfferingToSpecificAddress">to any address</span><span v-show="onlyOfferingToSpecificAddress">only to <span class="truncate font-mono text-sm text-gray-500">{{ offerDialog.onlyOfferToAddress }}</span></span>.
                                         <span class="truncate font-normal text-gray-500">This price is </span> <floor-percent-display :amount-ether="offerDialog.offerAmountEther"></floor-percent-display>
                                     </h4>
                                 </div>
@@ -248,7 +263,7 @@
                         </div>
                     </div>
                 </div>
-                <dialog-buttons button-message="Offer for Sale" :button-disabled="transaction.inProgress || offerDialog.offerAmountEther <= 0" :transaction="transaction" @main-button-click="offerPunkForSale()" @cancel-button-click="closeDialogs()"></dialog-buttons>
+                <dialog-buttons button-message="Offer for Sale" :button-disabled="transaction.inProgress || offerDialog.offerAmountEther <= 0 || !offerToAddressIsValid" :transaction="transaction" @main-button-click="offerPunkForSale()" @cancel-button-click="closeDialogs()"></dialog-buttons>
             </div>
         </div>
     </div>
@@ -786,6 +801,7 @@
                 },
                 offerDialog: {
                     offerAmountEther: null,
+                    onlyOfferToAddress: null,
                 },
                 transferDialog: {
                     transferToAddress: null,
@@ -896,6 +912,24 @@
                         && web3.utils.isAddress(this.transferDialog.transferToAddress)
                         && !web3.utils.toBN(this.transferDialog.transferToAddress).isZero();
                 },
+                onlyOfferingToSpecificAddress: function () {
+                    return this.offerDialog.onlyOfferToAddress !== null && this.offerDialog.onlyOfferToAddress !== "";
+                },
+                offerToAddressStatusMessage: function () {
+                    if (!this.offerDialog.onlyOfferToAddress) {
+                        return "Offering for sale to any address.";
+                    } else if (!web3.utils.isAddress(this.offerDialog.onlyOfferToAddress)) {
+                        return "Invalid Ethereum Address";
+                    } else if (web3.utils.toBN(this.offerDialog.onlyOfferToAddress).isZero()) {
+                        return "Invalid Address - Zero Address not Allowed"
+                    }
+                    return "Address is valid";
+                },
+                offerToAddressIsValid: function () {
+                    return this.offerDialog.onlyOfferToAddress == null
+                        || this.offerDialog.onlyOfferToAddress === ''
+                        || (web3.utils.isAddress(this.offerDialog.onlyOfferToAddress) && !web3.utils.toBN(this.offerDialog.onlyOfferToAddress).isZero());
+                },
             },
             methods: {
                 reloadPunkData: function() {
@@ -904,6 +938,7 @@
                 resetDialogData: function () {
                     this.bidDialog.bidAmountEther = null;
                     this.offerDialog.offerAmountEther = null;
+                    this.offerDialog.onlyOfferToAddress = null;
                     this.transferDialog.transferToAddress = null;
                 },
                 transactionStarted: function () {
@@ -993,6 +1028,24 @@
                     });
                 },
                 offerPunkForSale: function() {
+                    if (this.onlyOfferingToSpecificAddress) {
+                        this.offerPunkForSaleToAddress();
+                    } else {
+                        this.offerPunkForSaleToAnyone();
+                    }
+                },
+                offerPunkForSaleToAddress: function() {
+                    var self = this;
+                    Cryptopunks.offerPunkForSaleToAddress(this.punkIndex, web3.utils.toWei(''+this.offerDialog.offerAmountEther, 'ether'), this.offerDialog.onlyOfferToAddress, function() {
+                        self.transactionStarted();
+                    }, function (receipt) {
+                        self.transactionSuccess(receipt);
+                        self.reloadPunkData();
+                    }, function (error) {
+                        self.transactionError(error);
+                    });
+                },
+                offerPunkForSaleToAnyone: function() {
                     var self = this;
                     Cryptopunks.offerPunkForSale(this.punkIndex, web3.utils.toWei(''+this.offerDialog.offerAmountEther, 'ether'), function() {
                         self.transactionStarted();
