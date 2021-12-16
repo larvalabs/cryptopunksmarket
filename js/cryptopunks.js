@@ -723,18 +723,19 @@ Cryptopunks.offerPunkForSaleToAddress = function(index, amount, address) {
 	return true;
 };
 
-Cryptopunks.punkNoLongerForSale = function(index) {
-    Cryptopunks.punkContract.punkNoLongerForSale(index, {gas: 200000, gasPrice: Cryptopunks.gasPrice}, function(error, result) {
-        if(!error) {
-            console.log(result);
-            console.log("Success!");
-			Cryptopunks.trackTransaction("Remove Offer for " + index, index, result);
-        } else {
+Cryptopunks.punkNoLongerForSale = function(index, sendingCallback, successCallback, errorCallback) {
+    Cryptopunks.punkContract.methods.punkNoLongerForSale(index).send({from: Cryptopunks.PunkState.account, gas: 200000, gasPrice: Cryptopunks.gasPrice})
+        .on('sending', function() {
+            if (sendingCallback) sendingCallback();
+        })
+        .once('receipt', function(receipt) {
+            console.log(receipt);
+            if (successCallback) successCallback(receipt);
+        })
+        .on('error', function(error, receipt) {
             console.log(error);
-            console.log("Failure.");
-			Cryptopunks.showFailure("Remove Offer for " + index, index);
-        }
-    });
+            if (errorCallback) errorCallback(error);
+        });
 	return true;
 };
 
@@ -773,42 +774,48 @@ Cryptopunks.enterBidForPunk = function(index, amount, sendingCallback, successCa
             if (errorCallback) errorCallback(error);
         });
 	return true;
-};
+}
 
-Cryptopunks.acceptBidForPunk = function(index, amount) {
+Cryptopunks.acceptBidForPunk = function(index, amount, sendingCallback, successCallback, errorCallback) {
     if (amount.isZero()) {
         console.log("Error: Amount too low for accept bid.");
         return false;
     }
     console.log("Accepting bid for " + index + " for " + amount);
-    Cryptopunks.punkContract.acceptBidForPunk(index, amount.toString(), {gas: 200000, gasPrice: Cryptopunks.gasPrice}, function(error, result) {
-        if(!error) {
-            console.log(result);
-            console.log("Success!");
-			Cryptopunks.trackTransaction("Accept bid for " + index, index, result);
-        } else {
+    Cryptopunks.punkContract.methods.acceptBidForPunk(index, amount.toString()).send( {from: Cryptopunks.PunkState.account, gas: 200000, gasPrice: Cryptopunks.gasPrice})
+        .on('sending', function() {
+            if (sendingCallback) sendingCallback();
+        })
+        .on('receipt', function(receipt) {
+            console.log(receipt);
+            console.log("Bid successful.");
+            if (successCallback) successCallback(receipt);
+        })
+        .on('error', function(error, receipt) {
             console.log(error);
-            console.log("Failure.");
-			Cryptopunks.showFailure("Accept bid for " + index, index);
-        }
-    });
-	return true;
-};
+            console.log("Bid failed.");
+            if (errorCallback) errorCallback(error);
+        });
+    return true;
+}
 
-Cryptopunks.withdrawBidForPunk = function(index) {
-    Cryptopunks.punkContract.withdrawBidForPunk(index, {gas: 200000, gasPrice: Cryptopunks.gasPrice}, function(error, result) {
-        if(!error) {
-            console.log(result);
-            console.log("Success!");
-			Cryptopunks.trackTransaction("Withdraw bid on " + index, index, result);
-        } else {
+Cryptopunks.withdrawBidForPunk = function(index, sendingCallback, successCallback, errorCallback) {
+    Cryptopunks.punkContract.methods.withdrawBidForPunk(index).send( {from: Cryptopunks.PunkState.account, gas: 200000, gasPrice: Cryptopunks.gasPrice})
+        .on('sending', function() {
+            if (sendingCallback) sendingCallback();
+        })
+        .on('receipt', function(receipt) {
+            console.log(receipt);
+            console.log("Bid successful.");
+            if (successCallback) successCallback(receipt);
+        })
+        .on('error', function(error, receipt) {
             console.log(error);
-            console.log("Failure.");
-			Cryptopunks.showFailure("Withdraw bid on " + index, index);
-        }
-    });
-	return true;
-};
+            console.log("Bid failed.");
+            if (errorCallback) errorCallback(error);
+        });
+    return true;
+}
 
 Cryptopunks.withdraw = function() {
     Cryptopunks.punkContract.withdraw({gas: 200000, gasPrice: Cryptopunks.gasPrice}, function(error, result) {

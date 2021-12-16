@@ -91,6 +91,94 @@
         </div>
     </div>
 
+    <!-- Withdraw Bid Dialog -->
+    <div v-show="dialogState.showWithdrawBid" class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true" v-cloak>
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+
+            <!-- This element is to trick the browser into centering the modal contents. -->
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+                <div>
+                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+                        <!-- Heroicon name: outline/check -->
+                        <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                        </svg>
+                    </div>
+                    <div class="mt-3 text-center sm:mt-5">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">
+                            You are Withdrawing Your Bid for Punk #{{ punkIndex }}
+                        </h3>
+                        <div class="mt-10 text-left">
+
+                            <dialog-confirmation-header></dialog-confirmation-header>
+
+                            <div class="flex mt-3">
+                                <div class="mr-4 flex-shrink-0 self-center">
+                                    <img :src=punkImageUrl alt="Cryptopunk image" class="w-16 h-16 object-center object-cover sm:rounded-lg img-scale-pixelated bg-punk-default">
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold">
+                                        <span class="font-normal text-gray-500">You are withdrawing your bid of</span> <value-display :amount-wei="state.punkData.bidValue"></value-display> <span class="font-normal text-gray-500">for</span> Punk #{{ punkIndex }}.
+                                    </h4>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <dialog-buttons button-message="Withdraw Bid" :button-disabled="transaction.inProgress" :transaction="transaction" @main-button-click="withdrawBidForPunk()" @cancel-button-click="closeDialogs()"></dialog-buttons>
+            </div>
+        </div>
+    </div>
+
+    <!-- Accept Bid Dialog -->
+    <div v-show="dialogState.showAcceptBid" class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true" v-cloak>
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+
+            <!-- This element is to trick the browser into centering the modal contents. -->
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+                <div>
+                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+                        <!-- Heroicon name: outline/check -->
+                        <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                        </svg>
+                    </div>
+                    <div class="mt-3 text-center sm:mt-5">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">
+                            You are Accepting a Bid for Punk #{{ punkIndex }}
+                        </h3>
+                        <div class="mt-10 text-left">
+
+                            <dialog-confirmation-header></dialog-confirmation-header>
+
+                            <div class="flex mt-3">
+                                <div class="mr-4 flex-shrink-0 self-center">
+                                    <img :src=punkImageUrl alt="Cryptopunk image" class="w-16 h-16 object-center object-cover sm:rounded-lg img-scale-pixelated bg-punk-default">
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold">
+                                        <span class="font-normal text-gray-500">You are accepting a bid of</span> <value-display :amount-wei="state.punkData.bidValue"></value-display> <span class="font-normal text-gray-500">for</span> Punk #{{ punkIndex }}.
+                                        <br>
+                                        <span class="truncate font-normal text-gray-500">This bid is </span> <floor-percent-display :amount-wei="state.punkData.bidValue"></floor-percent-display>
+                                    </h4>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <dialog-buttons button-message="Accept Bid" :button-disabled="transaction.inProgress" :transaction="transaction" @main-button-click="acceptBidForPunk()" @cancel-button-click="closeDialogs()"></dialog-buttons>
+            </div>
+        </div>
+    </div>
+
     <!-- Offer For Sale Modal -->
     <div v-show="dialogState.showOfferForSale" class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true" v-cloak>
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -161,6 +249,49 @@
                     </div>
                 </div>
                 <dialog-buttons button-message="Offer for Sale" :button-disabled="transaction.inProgress || offerDialog.offerAmountEther <= 0" :transaction="transaction" @main-button-click="offerPunkForSale()" @cancel-button-click="closeDialogs()"></dialog-buttons>
+            </div>
+        </div>
+    </div>
+
+    <!-- Remove from Sale Dialog -->
+    <div v-show="dialogState.showRemoveFromSale" class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true" v-cloak>
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+
+            <!-- This element is to trick the browser into centering the modal contents. -->
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+                <div>
+                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+                        <!-- Heroicon name: outline/check -->
+                        <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                        </svg>
+                    </div>
+                    <div class="mt-3 text-center sm:mt-5">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">
+                            You are removing Punk #{{ punkIndex }} from Sale
+                        </h3>
+                        <div class="mt-10 text-left">
+
+                            <dialog-confirmation-header></dialog-confirmation-header>
+
+                            <div class="flex mt-3">
+                                <div class="mr-4 flex-shrink-0 self-center">
+                                    <img :src=punkImageUrl alt="Cryptopunk image" class="w-16 h-16 object-center object-cover sm:rounded-lg img-scale-pixelated bg-punk-default">
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold">
+                                        <span class="truncate font-normal text-gray-500">You are removing Punk #{{ punkIndex }} from sale.</span>
+                                    </h4>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <dialog-buttons button-message="Remove from Sale" :button-disabled="transaction.inProgress" :transaction="transaction" @main-button-click="removePunkFromSale()" @cancel-button-click="closeDialogs()"></dialog-buttons>
             </div>
         </div>
     </div>
@@ -351,37 +482,13 @@
 
                 <div class="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
                     <h1 class="text-3xl font-extrabold tracking-tight text-gray-900">Cryptopunk #{{ punkIndex }}</h1>
-<!--                    <h2 id="information-heading" class="sr-only">Product information</h2>-->
+<!--                    <h2 id="information-heading" class="sr-only">Information</h2>-->
 <!--                    <p class="text-sm text-gray-500 mt-2">Male, 3 Attributes</p>-->
                     <div class="mt-3">
                         <h2 class="sr-only">Product information</h2>
 <!--                        <p class="text-xl text-gray-900">Male, 4 Attributes</p>-->
                         <p class="text-xl text-gray-900">Owned by <account-link :account="state.punkData.owner"></account-link></p>
                     </div>
-
-<!--
-                    <section aria-labelledby="details-heading" class="mt-5">
-                        <h2 id="details-heading" class="sr-only">Attributes</h2>
-
-                        <div class="">
-                            <div>
-                                <div class="pb-6 prose prose-sm" id="disclosure-1">
-                                    <ul role="list">
-                                        <li>Horn Rimmed Glasses</li>
-
-                                        <li>Mohawk</li>
-
-                                        <li>Chinstrap Beard</li>
-
-                                        <li>Earring</li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            &lt;!&ndash; More sections... &ndash;&gt;
-                        </div>
-                    </section>
--->
 
                     <!-- Market Status -->
                     <section aria-labelledby="policies-heading" class="mt-5">
@@ -410,7 +517,7 @@
                                     <button @click="showBuyDialog()" :disabled="!accountIsUnlocked" type="submit" class="flex-1 bg-blue-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50">Buy</button>
                                 </div>
                                 <div v-show="shouldShowRemoveFromSaleButton" class="mt-5 flex sm:flex-col1">
-                                    <button type="submit" :disabled="!accountIsUnlocked" class="flex-1 bg-blue-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50">Remove from Sale</button>
+                                    <button @click="showRemoveFromSaleDialog()" type="submit" :disabled="!accountIsUnlocked" class="flex-1 bg-blue-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50">Remove from Sale</button>
                                 </div>
                                 <div v-show="shouldShowOfferForSaleButton" class="mt-5 flex sm:flex-col1">
                                     <button @click="showOfferForSaleDialog()" type="submit" :disabled="!accountIsUnlocked" class="flex-1 bg-blue-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50">Offer for Sale</button>
@@ -439,13 +546,13 @@
                                 </dd>
 
                                 <div v-show="shouldShowAcceptBidButton" class="mt-5 flex sm:flex-col1">
-                                    <button type="submit" :disabled="!accountIsUnlocked" class="flex-1 bg-blue-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50">Accept Bid</button>
+                                    <button @click="showAcceptBidDialog()" type="submit" :disabled="!accountIsUnlocked" class="flex-1 bg-blue-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50">Accept Bid</button>
                                 </div>
                                 <div v-show="shouldShowBidButton" class="mt-5 flex sm:flex-col1">
                                     <button @click="showBidDialog()" :disabled="!accountIsUnlocked" type="submit" class="flex-1 bg-blue-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50">Bid</button>
                                 </div>
                                 <div v-show="shouldShowWithdrawBidButton" class="mt-5 flex sm:flex-col1">
-                                    <button type="submit" :disabled="!accountIsUnlocked" class="flex-1 bg-blue-100 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-blue-700 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50">Withdraw Bid</button>
+                                    <button @click="showWithdrawBidDialog()" type="submit" :disabled="!accountIsUnlocked" class="flex-1 bg-blue-100 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-blue-700 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50">Withdraw Bid</button>
                                 </div>
                             </div>
                         </dl>
@@ -667,8 +774,11 @@
                 ownerAddress: '',
                 dialogState: {
                     showOfferForSale: false,
+                    showRemoveFromSale: false,
                     showTransfer: false,
                     showBid: false,
+                    showWithdrawBid: false,
+                    showAcceptBid: false,
                     showBuy: false,
                 },
                 bidDialog: {
@@ -818,8 +928,11 @@
                 },
                 closeDialogs: function () {
                     this.dialogState.showOfferForSale = false;
+                    this.dialogState.showRemoveFromSale = false;
                     this.dialogState.showTransfer = false;
                     this.dialogState.showBid = false;
+                    this.dialogState.showWithdrawBid = false;
+                    this.dialogState.showAcceptBid = false;
                     this.dialogState.showBuy = false;
 
                     this.resetDialogData();
@@ -828,11 +941,20 @@
                 showOfferForSaleDialog: function () {
                     this.dialogState.showOfferForSale = true;
                 },
+                showRemoveFromSaleDialog: function () {
+                    this.dialogState.showRemoveFromSale = true;
+                },
                 showTransferDialog: function () {
                     this.dialogState.showTransfer = true;
                 },
                 showBidDialog: function () {
                     this.dialogState.showBid = true;
+                },
+                showWithdrawBidDialog: function () {
+                    this.dialogState.showWithdrawBid = true;
+                },
+                showAcceptBidDialog: function () {
+                    this.dialogState.showAcceptBid = true;
                 },
                 showBuyDialog: function () {
                     this.dialogState.showBuy = true;
@@ -848,9 +970,42 @@
                         self.transactionError(error);
                     });
                 },
+                withdrawBidForPunk: function() {
+                    var self = this;
+                    Cryptopunks.withdrawBidForPunk(this.punkIndex, function() {
+                        self.transactionStarted();
+                    }, function (receipt) {
+                        self.transactionSuccess(receipt);
+                        self.reloadPunkData();
+                    }, function (error) {
+                        self.transactionError(error);
+                    });
+                },
+                acceptBidForPunk: function() {
+                    var self = this;
+                    Cryptopunks.acceptBidForPunk(this.punkIndex, web3.utils.toBN(this.state.punkData.bidValue), function() {
+                        self.transactionStarted();
+                    }, function (receipt) {
+                        self.transactionSuccess(receipt);
+                        self.reloadPunkData();
+                    }, function (error) {
+                        self.transactionError(error);
+                    });
+                },
                 offerPunkForSale: function() {
                     var self = this;
                     Cryptopunks.offerPunkForSale(this.punkIndex, web3.utils.toWei(''+this.offerDialog.offerAmountEther, 'ether'), function() {
+                        self.transactionStarted();
+                    }, function (receipt) {
+                        self.transactionSuccess(receipt);
+                        self.reloadPunkData();
+                    }, function (error) {
+                        self.transactionError(error);
+                    });
+                },
+                removePunkFromSale: function() {
+                    var self = this;
+                    Cryptopunks.punkNoLongerForSale(this.punkIndex, function() {
                         self.transactionStarted();
                     }, function (receipt) {
                         self.transactionSuccess(receipt);
