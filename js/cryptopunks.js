@@ -61,15 +61,27 @@ Cryptopunks.PunkState = {
 
 Cryptopunks.ABI = [{ "constant": true, "inputs": [], "name": "name", "outputs": [{"name": "", "type": "string", "value": "CRYPTOPUNKS"}], "payable": false, "type": "function"}, { "constant": true, "inputs": [{"name": "", "type": "uint256"}], "name": "punksOfferedForSale", "outputs": [{"name": "isForSale", "type": "bool", "value": false}, { "name": "punkIndex", "type": "uint256", "value": "0"}, { "name": "seller", "type": "address", "value": "0x0000000000000000000000000000000000000000"}, {"name": "minValue", "type": "uint256", "value": "0"}, { "name": "onlySellTo", "type": "address", "value": "0x0000000000000000000000000000000000000000"}], "payable": false, "type": "function"}, { "constant": false, "inputs": [{"name": "punkIndex", "type": "uint256"}], "name": "enterBidForPunk", "outputs": [], "payable": true, "type": "function"}, { "constant": true, "inputs": [], "name": "totalSupply", "outputs": [{"name": "", "type": "uint256", "value": "10000"}], "payable": false, "type": "function"}, { "constant": false, "inputs": [{"name": "punkIndex", "type": "uint256"}, {"name": "minPrice", "type": "uint256"}], "name": "acceptBidForPunk", "outputs": [], "payable": false, "type": "function"}, { "constant": true, "inputs": [], "name": "decimals", "outputs": [{"name": "", "type": "uint8", "value": "0"}], "payable": false, "type": "function"}, { "constant": false, "inputs": [{"name": "addresses", "type": "address[]"}, {"name": "indices", "type": "uint256[]"}], "name": "setInitialOwners", "outputs": [], "payable": false, "type": "function"}, { "constant": false, "inputs": [], "name": "withdraw", "outputs": [], "payable": false, "type": "function"}, { "constant": true, "inputs": [], "name": "imageHash", "outputs": [{ "name": "", "type": "string", "value": "ac39af4793119ee46bbff351d8cb6b5f23da60222126add4268e261199a2921b"}], "payable": false, "type": "function"}, { "constant": true, "inputs": [], "name": "nextPunkIndexToAssign", "outputs": [{"name": "", "type": "uint256", "value": "0"}], "payable": false, "type": "function"}, { "constant": true, "inputs": [{"name": "", "type": "uint256"}], "name": "punkIndexToAddress", "outputs": [{"name": "", "type": "address", "value": "0xc352b534e8b987e036a93539fd6897f53488e56a"}], "payable": false, "type": "function"}, { "constant": true, "inputs": [], "name": "standard", "outputs": [{"name": "", "type": "string", "value": "CryptoPunks"}], "payable": false, "type": "function"}, { "constant": true, "inputs": [{"name": "", "type": "uint256"}], "name": "punkBids", "outputs": [{"name": "hasBid", "type": "bool", "value": false}, { "name": "punkIndex", "type": "uint256", "value": "0"}, { "name": "bidder", "type": "address", "value": "0x0000000000000000000000000000000000000000"}, {"name": "value", "type": "uint256", "value": "0"}], "payable": false, "type": "function"}, { "constant": true, "inputs": [{"name": "", "type": "address"}], "name": "balanceOf", "outputs": [{"name": "", "type": "uint256", "value": "0"}], "payable": false, "type": "function"}, { "constant": false, "inputs": [], "name": "allInitialOwnersAssigned", "outputs": [], "payable": false, "type": "function"}, { "constant": true, "inputs": [], "name": "allPunksAssigned", "outputs": [{"name": "", "type": "bool", "value": true}], "payable": false, "type": "function"}, { "constant": false, "inputs": [{"name": "punkIndex", "type": "uint256"}], "name": "buyPunk", "outputs": [], "payable": true, "type": "function"}, { "constant": false, "inputs": [{"name": "to", "type": "address"}, {"name": "punkIndex", "type": "uint256"}], "name": "transferPunk", "outputs": [], "payable": false, "type": "function"}, { "constant": true, "inputs": [], "name": "symbol", "outputs": [{"name": "", "type": "string", "value": "Ͼ"}], "payable": false, "type": "function"}, { "constant": false, "inputs": [{"name": "punkIndex", "type": "uint256"}], "name": "withdrawBidForPunk", "outputs": [], "payable": false, "type": "function"}, { "constant": false, "inputs": [{"name": "to", "type": "address"}, {"name": "punkIndex", "type": "uint256"}], "name": "setInitialOwner", "outputs": [], "payable": false, "type": "function"}, { "constant": false, "inputs": [{"name": "punkIndex", "type": "uint256"}, { "name": "minSalePriceInWei", "type": "uint256"}, {"name": "toAddress", "type": "address"}], "name": "offerPunkForSaleToAddress", "outputs": [], "payable": false, "type": "function"}, { "constant": true, "inputs": [], "name": "punksRemainingToAssign", "outputs": [{"name": "", "type": "uint256", "value": "0"}], "payable": false, "type": "function"}, { "constant": false, "inputs": [{"name": "punkIndex", "type": "uint256"}, {"name": "minSalePriceInWei", "type": "uint256"}], "name": "offerPunkForSale", "outputs": [], "payable": false, "type": "function"}, { "constant": false, "inputs": [{"name": "punkIndex", "type": "uint256"}], "name": "getPunk", "outputs": [], "payable": false, "type": "function"}, { "constant": true, "inputs": [{"name": "", "type": "address"}], "name": "pendingWithdrawals", "outputs": [{"name": "", "type": "uint256", "value": "0"}], "payable": false, "type": "function"}, { "constant": false, "inputs": [{"name": "punkIndex", "type": "uint256"}], "name": "punkNoLongerForSale", "outputs": [], "payable": false, "type": "function"}, {"inputs": [], "payable": true, "type": "constructor"}, { "anonymous": false, "inputs": [{"indexed": true, "name": "to", "type": "address"}, { "indexed": false, "name": "punkIndex", "type": "uint256"}], "name": "Assign", "type": "event"}, { "anonymous": false, "inputs": [{"indexed": true, "name": "from", "type": "address"}, { "indexed": true, "name": "to", "type": "address"}, {"indexed": false, "name": "value", "type": "uint256"}], "name": "Transfer", "type": "event"}, { "anonymous": false, "inputs": [{"indexed": true, "name": "from", "type": "address"}, { "indexed": true, "name": "to", "type": "address"}, {"indexed": false, "name": "punkIndex", "type": "uint256"}], "name": "PunkTransfer", "type": "event"}, { "anonymous": false, "inputs": [{"indexed": true, "name": "punkIndex", "type": "uint256"}, { "indexed": false, "name": "minValue", "type": "uint256"}, {"indexed": true, "name": "toAddress", "type": "address"}], "name": "PunkOffered", "type": "event"}, { "anonymous": false, "inputs": [{"indexed": true, "name": "punkIndex", "type": "uint256"}, { "indexed": false, "name": "value", "type": "uint256"}, {"indexed": true, "name": "fromAddress", "type": "address"}], "name": "PunkBidEntered", "type": "event"}, { "anonymous": false, "inputs": [{"indexed": true, "name": "punkIndex", "type": "uint256"}, { "indexed": false, "name": "value", "type": "uint256"}, {"indexed": true, "name": "fromAddress", "type": "address"}], "name": "PunkBidWithdrawn", "type": "event"}, { "anonymous": false, "inputs": [{"indexed": true, "name": "punkIndex", "type": "uint256"}, { "indexed": false, "name": "value", "type": "uint256"}, {"indexed": true, "name": "fromAddress", "type": "address"}, { "indexed": true, "name": "toAddress", "type": "address"}], "name": "PunkBought", "type": "event"}, { "anonymous": false, "inputs": [{"indexed": true, "name": "punkIndex", "type": "uint256"}], "name": "PunkNoLongerForSale", "type": "event"}];
 
-Vue.component('account-link', {
-    props: ['account'],
-    template: '<a v-bind:href="\'https://larvalabs.com/cryptopunks/accountInfo?account=\'+account" class="text-blue-600 hover:text-blue-300">{{ account.substring(0,8) }}</a>'
-});
+//
+// Utility functions
+//
 
-Vue.component('transaction-link', {
-    props: ['hash'],
-    template: '<a v-bind:href="\'https://etherscan.io/tx/\'+hash">{{hash.substring(0,8)}}</a>'
-});
+Cryptopunks.etherToUsd = function (etherValue) {
+    return etherValue * Cryptopunks.ETHER_CONVERSION.USD;
+}
+
+Cryptopunks.formatUsd = function (usdValue, fractionDigits) {
+    if (!fractionDigits) fractionDigits = 2;
+    var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: fractionDigits,
+        maximumFractionDigits: fractionDigits,
+    });
+    if (formatter) {
+        usdValStr = formatter.format(usdValue);
+    }
+    return usdValStr;
+}
 
 Cryptopunks.abbrNum = function (number, decPlaces) {
     // 2 decimal places => 100, 3 => 1000, etc
@@ -101,23 +113,84 @@ Cryptopunks.abbrNum = function (number, decPlaces) {
     return number;
 }
 
-Cryptopunks.etherToUsd = function (etherValue) {
-    return etherValue * Cryptopunks.ETHER_CONVERSION.USD;
-}
 
-Cryptopunks.formatUsd = function (usdValue, fractionDigits) {
-    if (!fractionDigits) fractionDigits = 2;
-    var formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: fractionDigits,
-        maximumFractionDigits: fractionDigits,
-    });
-    if (formatter) {
-        usdValStr = formatter.format(usdValue);
-    }
-    return usdValStr;
-}
+//
+// Vue Components
+//
+
+Vue.component('account-link', {
+    props: ['account'],
+    template: '<a v-bind:href="\'https://larvalabs.com/cryptopunks/accountInfo?account=\'+account" class="text-blue-600 hover:text-blue-300">{{ account.substring(0,8) }}</a>'
+});
+
+Vue.component('account-verification-links', {
+    props: ['account'],
+    template: `
+        <div>
+            (<a v-bind:href="\'https://larvalabs.com/cryptopunks/accountInfo?account=\'+account" class="text-blue-600 hover:text-blue-300" target="_blank">View on LarvaLabs.com</a>) 
+            (<a v-bind:href="\'https://etherscan.io/address/\'+account" class="text-blue-600 hover:text-blue-300" target="_blank">View on Etherscan</a>)
+        </div>
+    `
+});
+
+Vue.component('transaction-link', {
+    props: ['hash'],
+    template: '<a v-bind:href="\'https://etherscan.io/tx/\'+hash">{{hash.substring(0,8)}}</a>'
+});
+
+Vue.component('dialog-confirmation-header', {
+    props: [''],
+    template: `
+        <div class="">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+                Confirmation
+            </h3>
+            <p class="mt-1 text-sm text-gray-500">
+                Please check the following values carefully. Important note: Your wallet is the final authority for any transaction values, be sure to also verify in your wallet that everything is correct.
+            </p>
+        </div>
+`
+});
+
+Vue.component('dialog-buttons', {
+    props: ['buttonMessage', 'buttonDisabled', 'transaction'],
+    template: `
+        <div>
+                <div v-show="transaction.errorMessage !== null" class="mt-5">
+                    <div class="rounded-md bg-red-50 p-4 mb-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <!-- Heroicon name: solid/x-circle -->
+                                <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-red-800">
+                                    {{ transaction.errorMessage }}
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
+                    <button v-show="!transaction.completedSuccessfully" :disabled="buttonDisabled" @click="$emit('main-button-click')" type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:col-start-2 sm:text-sm disabled:opacity-50">
+                        <svg v-show="transaction.inProgress" class="mr-2 animate-spin h-4 w-4 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        {{ buttonMessage }}
+                    </button>
+                    <button v-show="transaction.completedSuccessfully" @click="$emit('cancel-button-click')" type="button" class="col-span-2 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm disabled:opacity-50">
+                        Transaction Successful - Click to Close
+                    </button>
+                    <button v-show="!transaction.completedSuccessfully" :disabled="transaction.inProgress || transaction.completedSuccessfully" @click="$emit('cancel-button-click')" type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:col-start-1 sm:text-sm disabled:opacity-50">
+                        Cancel
+                    </button>
+                </div>
+        </div>
+    `,
+});
 
 Vue.component('floor-percent-display', {
     props: ['amountWei', 'amountEther', 'short'],
@@ -130,16 +203,24 @@ Vue.component('floor-percent-display', {
             }
             return 0;
         },
+        floorFraction: function () {
+            return this.etherValue / Cryptopunks.floorPriceEther;
+        },
         floorPercentMessage: function () {
-            const fraction = this.etherValue / Cryptopunks.floorPriceEther;
+            const fraction = this.floorFraction;
             if (fraction > 1) {
                 return ((fraction-1) * 100).toFixed(0) + "% above current floor.";
             } else {
                 return ((1-fraction) * 100).toFixed(0) + "% below current floor.";
             }
         },
+        css: function () {
+            if (this.floorFraction < 1) {
+                return "text-red-500";
+            }
+        },
     },
-    template: '<span>{{floorPercentMessage}}</span>'
+    template: '<span :class="css">{{floorPercentMessage}}</span>'
 })
 
 Vue.component('value-display', {
@@ -191,56 +272,10 @@ Vue.component('value-display', {
     template: '<span><span>{{shortEtherValue}} Ξ</span> <span class="truncate font-normal text-gray-500">(${{shortUSDValue}})</span></span>'
 });
 
-var panel1 = new Vue({
-    el: '#ethereum_panels',
-    data: {
-        state: Cryptopunks.PunkState,
-        agreeToTerms: "no",
-    },
-    mounted() {
-        if (localStorage.agreeToTerms) {
-            this.agreeToTerms = localStorage.agreeToTerms;
-        }
-    },
-    watch: {
-        agreeToTerms(newVal) {
-            localStorage.agreeToTerms = newVal;
-        }
-    },
-    computed: {
-        accountShort: function() {
-            if (this.state.accountUnlocked) {
-                return this.state.account.substring(0,10);
-            } else {
-                return "none";
-            }
-        },
-        showFullPanel: function() {
-            return this.state.accountUnlocked && this.agreeToTerms === 'yes';
-        },
-        showUnlockPanel: function() {
-            return this.state.accountQueried && this.state.web3ready && !this.state.web3UsingInfura && !this.state.accountUnlocked && this.agreeToTerms === 'yes';
-        },
-        showTermsPanel: function() {
-            return this.state.accountQueried && this.state.web3ready && !this.state.web3UsingInfura && this.agreeToTerms === 'no';
-        },
-        showNoMetamask: function() {
-            return this.state.web3UsingInfura;
-        }
-    },
-    methods: {
-        userAgreeToTerms: function (event) {
-            this.agreeToTerms = "yes";
-            // localStorage.setItem(Cryptopunks.AGREE_TO_TERMS, "yes");
-        },
-        userRejectTerms: function (event) {
-            this.agreeToTerms = "deny";
-            // this.state.agreedToTermsStatus = 2;
-            // localStorage.setItem(Cryptopunks.AGREE_TO_TERMS, "deny");
-        },
-    }
-});
 
+//
+// Cryptopunks related functions and app startup
+//
 Cryptopunks.init = function(punkContractAddress, ethereumUrl, testnet) {
     console.log("Cryptopunks Market init...");
 
@@ -374,6 +409,24 @@ Cryptopunks.requestMetamaskAccess = async () => {
     }
 }
 
+Cryptopunks.parseTransactionErrorMessage = function(error) {
+    try {
+        if (error) {
+            if (error.message) {
+                // Error is already an object, just return the message.
+                return error.message;
+            }
+            var jsonStr = error.substring(error.indexOf('{'), error.length - 1);
+            var jsonObj = JSON.parse(jsonStr);
+            var errorMessage = jsonObj.value.data.message.replace("VM Exception while processing transaction: revert ", "");
+            return "Error processing transaction: " + errorMessage;
+        }
+    } catch (e) {
+        console.log("Error parsing transaction error: " + e);
+        return "Error processing transaction.";
+    }
+}
+
 var allEventsContainsEvent = function(item) {
     for (var i = 0; i < Cryptopunks.PunkState.events.allSorted.length; i++) {
         var obj = Cryptopunks.PunkState.events.allSorted[i];
@@ -459,11 +512,11 @@ Cryptopunks.loadPunkData = function(index) {
 };
 
 Cryptopunks.refreshPendingWidthdrawals = function() {
-    Cryptopunks.punkContract.pendingWithdrawals(Cryptopunks.PunkState.account, function(error, result) {
+    Cryptopunks.punkContract.methods.pendingWithdrawals(Cryptopunks.PunkState.account).call(function(error, result) {
         if (!error) {
             Cryptopunks.PunkState.accountBalanceInWei = result;
-            Cryptopunks.PunkState.accountBalanceInEther = web3.fromWei(result, 'ether').toNumber();
-            if (!result.isZero()) {
+            Cryptopunks.PunkState.accountBalanceInEther = parseFloat(web3.utils.fromWei(result, 'ether'));
+            if (Cryptopunks.PunkState.accountBalanceInEther > 0) {
                 Cryptopunks.PunkState.accountHasBalance = true;
             } else {
                 Cryptopunks.PunkState.accountHasBalance = false;
@@ -605,36 +658,42 @@ Cryptopunks.testAjax = function() {
 
 }
 
-Cryptopunks.buyPunk = function(index, price) {
-    Cryptopunks.punkContract.buyPunk(index, {gas: 200000, gasPrice: Cryptopunks.gasPrice, value: price}, function(error, result) {
-        if(!error) {
-            console.log(result);
-            console.log("Success!");
-			Cryptopunks.trackTransaction("Buy " + index, index, result);
-        } else {
+Cryptopunks.buyPunk = function(index, price, sendingCallback, successCallback, errorCallback) {
+    Cryptopunks.punkContract.methods.buyPunk(index).send( {from: Cryptopunks.PunkState.account, gas: 200000, gasPrice: Cryptopunks.gasPrice, value: price})
+        .on('sending', function() {
+            if (sendingCallback) sendingCallback();
+        })
+        .once('receipt', function(receipt) {
+            console.log(receipt);
+            if (successCallback) successCallback(receipt);
+        })
+        .on('error', function(error, receipt) {
             console.log(error);
-            console.log("Failure.");
-        }
-    });
+            if (errorCallback) errorCallback(error);
+        });
 	return true;
 };
 
-Cryptopunks.offerPunkForSale = function(index, amount) {
+Cryptopunks.offerPunkForSale = function(index, amount, sendingCallback, successCallback, errorCallback) {
 	console.log("Offering to sale to anyone");
 	if (!amount || amount == 0) {
 	    return false;
     }
-    Cryptopunks.punkContract.offerPunkForSale(index, amount, {gas: 200000, gasPrice: Cryptopunks.gasPrice}, function(error, result) {
-        if(!error) {
-            console.log(result);
-            console.log("Success!");
-			Cryptopunks.trackTransaction("Offer " + index, index, result);
-        } else {
+    Cryptopunks.punkContract.methods.offerPunkForSale(index, amount).send({from: Cryptopunks.PunkState.account, gas: 200000, gasPrice: Cryptopunks.gasPrice})
+        .on('sending', function() {
+            if (sendingCallback) sendingCallback();
+        })
+        .once('receipt', function(receipt) {
+            console.log(receipt);
+            console.log("Offer successful.");
+            if (successCallback) successCallback(receipt);
+        })
+        .on('error', function(error, receipt) {
             console.log(error);
-            console.log("Failure.");
-			Cryptopunks.showFailure("Offer " + index, index);
-        }
-    });
+            console.log("Offer failed.");
+            if (errorCallback) errorCallback(error);
+        });
+
 	return true;
 };
 
@@ -679,37 +738,40 @@ Cryptopunks.punkNoLongerForSale = function(index) {
 	return true;
 };
 
-Cryptopunks.transferPunk = function(index, address) {
+Cryptopunks.transferPunk = function(index, address, sendingCallback, successCallback, errorCallback) {
     if (!address || !address.startsWith("0x")) {
         return false;
     }
-    Cryptopunks.punkContract.transferPunk(address, index, {gas: 200000, gasPrice: Cryptopunks.gasPrice}, function(error, result) {
-        if(!error) {
-            console.log(result);
-            console.log("Success!");
-			Cryptopunks.trackTransaction("Transfer " + index, index, result);
-        } else {
+    Cryptopunks.punkContract.methods.transferPunk(address, index).send({from: Cryptopunks.PunkState.account, gas: 200000, gasPrice: Cryptopunks.gasPrice})
+        .on('sending', function() {
+            if (sendingCallback) sendingCallback();
+        })
+        .on('receipt', function(receipt) {
+            console.log(receipt);
+            if (successCallback) successCallback(receipt);
+        })
+        .on('error', function(error, receipt) {
             console.log(error);
-            console.log("Failure.");
-			Cryptopunks.showFailure("Transfer " + index, index);
-        }
-    });
+            if (errorCallback) errorCallback(error);
+        });
 	return true;
 };
 
-Cryptopunks.enterBidForPunk = function(index, amount) {
-	// todo - do data validation: do they own the punk, is the bid amount enough to beat an existing bid, etc.
-    Cryptopunks.punkContract.enterBidForPunk(index, {gas: 200000, gasPrice: Cryptopunks.gasPrice, value: amount}, function(error, result) {
-        if(!error) {
-            console.log(result);
-            console.log("Success!");
-			Cryptopunks.trackTransaction("Bid on " + index, index, result);
-        } else {
+Cryptopunks.enterBidForPunk = function(index, amount, sendingCallback, successCallback, errorCallback) {
+    Cryptopunks.punkContract.methods.enterBidForPunk(index).send({from: Cryptopunks.PunkState.account, gas: 200000, gasPrice: Cryptopunks.gasPrice, value: amount})
+        .on('sending', function() {
+            if (sendingCallback) sendingCallback();
+        })
+        .on('receipt', function(receipt) {
+            console.log(receipt);
+            console.log("Bid successful.");
+            if (successCallback) successCallback(receipt);
+        })
+        .on('error', function(error, receipt) {
             console.log(error);
-            console.log("Failure.");
-			Cryptopunks.showFailure("Bid on " + index, index);
-        }
-    });
+            console.log("Bid failed.");
+            if (errorCallback) errorCallback(error);
+        });
 	return true;
 };
 
