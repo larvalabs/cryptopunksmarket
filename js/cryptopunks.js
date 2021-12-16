@@ -2,8 +2,6 @@ var Cryptopunks = {};
 
 Cryptopunks.NULL_ADDRESS = "0x0000000000000000000000000000000000000000";
 Cryptopunks.AGREE_TO_TERMS = "_Cryptopunks_Agree_To_Terms";
-Cryptopunks.TX_HASHES = "_Cryptopunks_Hashes";
-Cryptopunks.TX_DIV_ID = "#pendingTransactions";
 Cryptopunks.EVENT_START_BLOCK = 3914490;
 Cryptopunks.ETHER_CONVERSION = {USD: 4000};
 
@@ -334,15 +332,6 @@ var startApp = function () {
             cryptopunksContractLoadedCallback();
         }
 
-        /*
-        var test = Cryptopunks.punkContract.totalSupply(function(error, result){
-            if(!error)
-                console.log(result);
-            else
-                console.log(error);
-        });
-        */
-
         var accountInterval = setInterval(function() {
             web3.eth.getAccounts(function(err, accounts) {
                 // console.log(accounts);
@@ -368,9 +357,6 @@ var startApp = function () {
             });
         }, 100);
 
-        Cryptopunks.restoreTransactions();
-        setInterval(Cryptopunks.checkTransactions, 1000);
-
         $.get('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD', function(data) {
             Cryptopunks.ETHER_CONVERSION.USD = data.USD;
             console.log("Value of ether now " + Cryptopunks.ETHER_CONVERSION.USD);
@@ -385,16 +371,6 @@ var startApp = function () {
             }
         })
 	}
-};
-
-Cryptopunks.test = function() {
-    Cryptopunks.punkContract.totalSupply(function(error, result){
-        if(!error)
-            console.log(result);
-        else
-            console.log(error);
-    });
-	return true;
 };
 
 Cryptopunks.requestMetamaskAccess = async () => {
@@ -528,135 +504,6 @@ Cryptopunks.refreshPendingWidthdrawals = function() {
     });
 };
 
-
-Cryptopunks.clearTransactions = function() {
-	localStorage.setItem(Cryptopunks.TX_HASHES, JSON.stringify([]));
-	Cryptopunks.PunkState.transactions = [];
-	// $(Cryptopunks.TX_DIV_ID).html('');
-};
-
-Cryptopunks.restoreTransactions = function() {
-	var storedData = localStorage.getItem(Cryptopunks.TX_HASHES);
-	var items = [];
-	if (storedData) {
-		items = JSON.parse(storedData);
-	}
-    console.log("Restored transactions from local storage, length: "+items.length);
-	Cryptopunks.PunkState.transactions = items;
-
-	// Clear content
-/*
-	for (i = 0; i < items.length; i++) {
-		var item = items[i];
-		Cryptopunks.showTransaction(item);
-	}
-*/
-};
-
-Cryptopunks.showTransaction = function(transaction) {
-	var div = $(Cryptopunks.TX_DIV_ID);
-	if (transaction.failed) {
-		div.append('<p id="' + transaction.hash + '">' + transaction.name + ' <i>failed</i>.</p>');
-	} else {
-		div.append('<p id="' + transaction.hash + '"><a href="https://etherscan.io/tx/' + transaction.hash + '">' + transaction.name + '</a> <i>pending</i>.</p>');
-	}
-
-};
-
-Cryptopunks.trackTransaction = function(name, index, hash) {
-	var storedData = localStorage.getItem(Cryptopunks.TX_HASHES);
-	var hashes = [];
-	if (storedData) {
-		hashes = JSON.parse(storedData);
-	}
-	var transaction = {
-		'name' : name,
-		'hash' : hash,
-		'index' : index,
-		'pending' : true
-	};
-	hashes.push(transaction);
-	localStorage.setItem(Cryptopunks.TX_HASHES, JSON.stringify(hashes));
-	Cryptopunks.PunkState.transactions = hashes;
-	// Cryptopunks.showTransaction(transaction);
-};
-
-Cryptopunks.showFailure = function(name, index) {
-	var transaction = {
-		'name' : name,
-		'hash' : '0x0',
-		'index' : index,
-		'pending' : false,
-		'failed' : true
-	};
-    Cryptopunks.PunkState.transactions.push(transaction);
-	// Cryptopunks.showTransaction(transaction);
-};
-
-Cryptopunks.checkTransactions = function() {
-	// console.log("Checking transactions...");
-	var storedData = localStorage.getItem(Cryptopunks.TX_HASHES);
-	var items = [];
-	if (storedData) {
-		items = JSON.parse(storedData);
-	}
-	Cryptopunks.PunkState.transactions = items;
-	// Clear content
-	for (i = 0; i < items.length; i++) {
-		var item = items[i];
-		if (item.pending) {
-			web3.eth.getTransaction(item.hash, function (error, result) {
-				if (!error) {
-					if (result) {
-						// console.log(result);
-						if (result.blockNumber) {
-							// Completed.
-							// $('#' + item.hash + ' i').text("completed");
-							item.pending = false;
-							if (item.index >= 0) {
-								console.log("Reloading pending withdrawals...");
-								Cryptopunks.refreshPendingWidthdrawals();
-                                if (Cryptopunks.currentPunkIndex == item.index) {
-                                    console.log("Reloading punk data...");
-                                    Cryptopunks.loadPunkData(Cryptopunks.currentPunkIndex);
-                                }
-							}
-							localStorage.setItem(Cryptopunks.TX_HASHES, JSON.stringify(items));
-						}
-					}
-				} else {
-					console.log(error);
-					console.log("Failure.");
-				}
-			});
-		} else {
-			// items.splice(i, 1);
-			// i--;
-		}
-	}
-	localStorage.setItem(Cryptopunks.TX_HASHES, JSON.stringify(items));
-};
-
-Cryptopunks.testAjax = function() {
-	console.log("About to reload.");
-	$.ajax({
-
-		url : "/cryptopunks/reloadpunk?punkIndex=" + 2000 + "&sinceBlockNum=" + 4009295,
-		type : 'GET',
-		data : {
-		},
-		dataType:'text',
-		success : function(data) {
-			console.log("Reloaded.");
-			location.reload(true);
-		},
-		error : function(request,error)
-		{
-			console.log("Reload error.");
-		}
-	});
-
-}
 
 Cryptopunks.buyPunk = function(index, price, sendingCallback, successCallback, errorCallback) {
     Cryptopunks.punkContract.methods.buyPunk(index).send( {from: Cryptopunks.PunkState.account, gas: 200000, gasPrice: Cryptopunks.gasPrice, value: price})
