@@ -227,24 +227,8 @@ Vue.component('value-display', {
             etherConversion: Cryptopunks.ETHER_CONVERSION
         };
     },
-    props: ['amountWei', 'amountEther', 'short'],
+    props: ['amountWei', 'amountEther', 'short', 'hideUsd'],
     computed: {
-        valueStr: function() {
-            if (amountWei) {
-                this.amountEther = parseFloat(web3.utils.fromWei(""+this.amountWei, 'ether'));
-            }
-            var usdVal = Cryptopunks.etherToUsd(amountEther);
-            var fractionDigits = 2;
-            if (this.short) fractionDigits = 0;
-            var usdValStr = '$'+Cryptopunks.abbrNum(usdVal, fractionDigits);
-
-            // The divide by 1 here removes trailing zeros
-            if (this.short) {
-                return '' + Cryptopunks.abbrNum(amountEther, 4) + ' Ξ (' + usdValStr + ')';
-            } else {
-                return '' + Cryptopunks.abbrNum(amountEther, 4) + ' ETH (' + usdValStr + ' USD)';
-            }
-        },
         amount: function () {
             if (this.amountEther) {
                 return web3.utils.toWei(""+this.amountEther, 'ether');
@@ -267,7 +251,7 @@ Vue.component('value-display', {
             return Cryptopunks.abbrNum(usdVal, fractionDigits);
         },
     },
-    template: '<span><span>{{shortEtherValue}} Ξ</span> <span class="truncate font-normal text-gray-500">(${{shortUSDValue}})</span></span>'
+    template: '<span><span>{{shortEtherValue}} Ξ</span><span v-show="!hideUsd" class="truncate font-normal text-gray-500"> (${{shortUSDValue}})</span></span>'
 });
 
 
@@ -504,7 +488,6 @@ Cryptopunks.refreshPendingWidthdrawals = function() {
     });
 };
 
-
 Cryptopunks.buyPunk = function(index, price, sendingCallback, successCallback, errorCallback) {
     Cryptopunks.punkContract.methods.buyPunk(index).send( {from: Cryptopunks.PunkState.account, gas: 200000, gasPrice: Cryptopunks.gasPrice, value: price})
         .on('sending', function() {
@@ -666,19 +649,21 @@ Cryptopunks.withdrawBidForPunk = function(index, sendingCallback, successCallbac
     return true;
 }
 
-Cryptopunks.withdraw = function() {
-    Cryptopunks.punkContract.withdraw({gas: 200000, gasPrice: Cryptopunks.gasPrice}, function(error, result) {
-        if(!error) {
-            console.log(result);
-            console.log("Success!");
-			Cryptopunks.trackTransaction("Withdraw ETH", -1, result);
-        } else {
+Cryptopunks.withdraw = function(sendingCallback, successCallback, errorCallback) {
+    Cryptopunks.punkContract.methods.withdraw().send( {from: Cryptopunks.PunkState.account, gas: 200000, gasPrice: Cryptopunks.gasPrice})
+        .on('sending', function() {
+            if (sendingCallback) sendingCallback();
+        })
+        .on('receipt', function(receipt) {
+            console.log(receipt);
+            console.log("Bid successful.");
+            if (successCallback) successCallback(receipt);
+        })
+        .on('error', function(error, receipt) {
             console.log(error);
-            console.log("Failure.");
-			Cryptopunks.showFailure("Withdraw ETH", -1);
-        }
-        Cryptopunks.refreshPendingWidthdrawals();
-    });
+            console.log("Bid failed.");
+            if (errorCallback) errorCallback(error);
+        });
 	return true;
 };
 

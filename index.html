@@ -17,6 +17,46 @@
 <body>
 
 <div id="main_content" class="bg-white">
+    <!-- Withdraw Account Balance Dialog -->
+    <div v-show="dialogState.showWithdrawAccountBalance" class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true" v-cloak>
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+
+            <!-- This element is to trick the browser into centering the modal contents. -->
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+                <div>
+                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                        <!-- Heroicon name: outline/check -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                    </div>
+                    <div class="mt-3 text-center sm:mt-5">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">
+                            You are Withdrawing Your Account Balance
+                        </h3>
+                        <div class="mt-10 text-left">
+
+                            <dialog-confirmation-header></dialog-confirmation-header>
+
+                            <div v-show="!transaction.completedSuccessfully" class="flex mt-3">
+                                <div>
+                                    <h4 class="text-lg font-bold">
+                                        <span class="font-normal text-gray-500">You are withdrawing your account balance of </span> <value-display :amount-wei="state.accountBalanceInWei" :hide-usd="true"></value-display>
+                                    </h4>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <dialog-buttons button-message="Withdraw Balance" :button-disabled="transaction.inProgress" :transaction="transaction" @main-button-click="withdrawAccountBalance()" @cancel-button-click="closeDialogs()"></dialog-buttons>
+            </div>
+        </div>
+    </div>
+
     <!-- Bid Modal -->
     <div v-show="dialogState.showBid" id="modal-bid" class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true" v-cloak>
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -473,6 +513,9 @@
                         <a v-show="state.account" href="#" class="p-2 text-blue-600 hover:text-blue-500 lg:ml-4">
                             {{shortAddress}}
                         </a>
+                        <a v-show="state.account && state.accountHasBalance" @click="showWithdrawAccountBalanceDialog()" href="#" class="text-blue-600 hover:text-blue-500 lg:ml-4">
+                            (Withdraw <value-display :amount-wei="state.accountBalanceInWei" :short="true" :hide-usd="true"></value-display>)
+                        </a>
                     </div>
                 </div>
             </div>
@@ -788,6 +831,7 @@
                 punkIndex: punkIndexParam,
                 ownerAddress: '',
                 dialogState: {
+                    showWithdrawAccountBalance: false,
                     showOfferForSale: false,
                     showRemoveFromSale: false,
                     showTransfer: false,
@@ -962,6 +1006,7 @@
                     this.transaction.completedSuccessfully = false;
                 },
                 closeDialogs: function () {
+                    this.dialogState.showWithdrawAccountBalance = false;
                     this.dialogState.showOfferForSale = false;
                     this.dialogState.showRemoveFromSale = false;
                     this.dialogState.showTransfer = false;
@@ -972,6 +1017,9 @@
 
                     this.resetDialogData();
                     this.resetTransactionInfo();
+                },
+                showWithdrawAccountBalanceDialog: function () {
+                    this.dialogState.showWithdrawAccountBalance = true;
                 },
                 showOfferForSaleDialog: function () {
                     this.dialogState.showOfferForSale = true;
@@ -993,6 +1041,18 @@
                 },
                 showBuyDialog: function () {
                     this.dialogState.showBuy = true;
+                },
+                withdrawAccountBalance: function() {
+                    var self = this;
+                    Cryptopunks.withdraw(function() {
+                        self.transactionStarted();
+                    }, function (receipt) {
+                        self.transactionSuccess(receipt);
+                        Cryptopunks.refreshPendingWidthdrawals();
+                        self.reloadPunkData();
+                    }, function (error) {
+                        self.transactionError(error);
+                    });
                 },
                 enterBidForPunk: function() {
                     var self = this;
