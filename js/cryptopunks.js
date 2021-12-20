@@ -9,9 +9,6 @@ Cryptopunks.currentPunkIndex = -1;
 
 Cryptopunks.gasPrice = 40 * 1000000001;
 
-// todo Load from API
-Cryptopunks.floorPriceEther = 68.0;
-
 Cryptopunks.PunkState = {
     agreedToTermsStatus: 0, // 0 = not yet agreed, 1 = agreed, 2 = denied
 	web3Queried: false,
@@ -25,6 +22,7 @@ Cryptopunks.PunkState = {
     accountBalanceInWei: 0,
     accountBalanceInEther: 0,
     transactions: [],
+    floorPriceEther: null,
     isOwned: true,
     isOwner: false,
     canBuy: false,
@@ -191,6 +189,11 @@ Vue.component('dialog-buttons', {
 });
 
 Vue.component('floor-percent-display', {
+    data: function () {
+        return {
+            state: Cryptopunks.PunkState,
+        };
+    },
     props: ['amountWei', 'amountEther', 'short'],
     computed: {
         etherValue: function () {
@@ -202,18 +205,26 @@ Vue.component('floor-percent-display', {
             return 0;
         },
         floorFraction: function () {
-            return this.etherValue / Cryptopunks.floorPriceEther;
+            if (this.state.floorPriceEther != null) {
+                return this.etherValue / this.state.floorPriceEther;
+            } else {
+                return null;
+            }
         },
         floorPercentMessage: function () {
             const fraction = this.floorFraction;
-            if (fraction > 1) {
+            if (fraction == null) {
+                return "[Loading floor price]";
+            } else if (fraction > 1) {
                 return ((fraction-1) * 100).toFixed(0) + "% above current floor.";
             } else {
                 return ((1-fraction) * 100).toFixed(0) + "% below current floor.";
             }
         },
         css: function () {
-            if (this.floorFraction < 1) {
+            if (this.floorFraction == null) {
+                return "text-gray-300";
+            } else if (this.floorFraction < 1) {
                 return "text-red-500";
             }
         },
@@ -354,7 +365,15 @@ var startApp = function () {
                 console.log("Gas price now " + Cryptopunks.gasPrice);
             }
         })
-	}
+
+        $.get('https://larvalabs.com/cryptopunks/api/v1/floor', function(data) {
+            if (data.offerValue) {
+                console.log("Punk floor price in wei: " + data.offerValue);
+                Cryptopunks.PunkState.floorPriceEther = web3.utils.fromWei(''+data.offerValue, "ether");
+                console.log("Punk floor price in Ether: " + Cryptopunks.PunkState.floorPriceEther);
+            }
+        })
+    }
 };
 
 Cryptopunks.requestMetamaskAccess = async () => {
