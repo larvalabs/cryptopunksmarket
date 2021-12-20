@@ -13,7 +13,7 @@ Cryptopunks.PunkState = {
     agreedToTermsStatus: 0, // 0 = not yet agreed, 1 = agreed, 2 = denied
 	web3Queried: false,
     web3ready: false,
-    web3UsingInfura: false,
+    web3UsingRemoteWeb3: false,
     web3NotPresent: false,
     accountQueried: false,
     accountUnlocked: false,
@@ -291,7 +291,7 @@ Cryptopunks.init = function(punkContractAddress, ethereumUrl, testnet) {
         web3 = new Web3(web3.currentProvider);
         window.web3 = web3;
     } else {
-        console.log("- Didn't find web3, using infura.");
+        console.log("- Didn't find web3, using remote web3.");
         // web3 = null;
         // Project3.state.web3NotPresent = true;
         // console.log('No web3? You should consider trying MetaMask!')
@@ -299,7 +299,7 @@ Cryptopunks.init = function(punkContractAddress, ethereumUrl, testnet) {
         // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
         if (ethereumUrl) {
             window.web3 = new Web3(new Web3.providers.HttpProvider(ethereumUrl));
-            Cryptopunks.PunkState.web3UsingInfura = true;
+            Cryptopunks.PunkState.web3UsingRemoteWeb3 = true;
         } else {
             web3 = null;
             Cryptopunks.PunkState.web3NotPresent = true;
@@ -323,7 +323,7 @@ var startApp = function () {
         Cryptopunks.punkContract = PunkContract;
         Cryptopunks.PunkState.web3ready = true;
 
-        if (typeof cryptopunksContractLoadedCallback !== 'undefined' && Cryptopunks.PunkState.web3UsingInfura) {
+        if (typeof cryptopunksContractLoadedCallback !== 'undefined' && Cryptopunks.PunkState.web3UsingRemoteWeb3) {
             cryptopunksContractLoadedCallback();
         }
 

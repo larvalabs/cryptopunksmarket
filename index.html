@@ -482,13 +482,15 @@
                             </svg>
                         </button>
 
+<!--
                         <a href="#" class="ml-2 p-2 text-gray-400 hover:text-gray-500">
                             <span class="sr-only">Search</span>
-                            <!-- Heroicon name: outline/search -->
+                            &lt;!&ndash; Heroicon name: outline/search &ndash;&gt;
                             <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                         </a>
+-->
                     </div>
 
                     <!-- Logo -->
@@ -499,13 +501,15 @@
 
                     <div class="flex-1 flex items-center justify-end">
                         <!-- Search -->
+<!--
                         <a href="#" class="hidden ml-6 p-2 text-gray-400 hover:text-gray-500 lg:block">
                             <span class="sr-only">Search</span>
-                            <!-- Heroicon name: outline/search -->
+                            &lt;!&ndash; Heroicon name: outline/search &ndash;&gt;
                             <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                         </a>
+-->
 
                         <a v-show="accountNeedsUnlock" onclick="Cryptopunks.requestMetamaskAccess()" href="#" class="p-2 text-blue-600 hover:text-blue-500 lg:ml-4">
                             Allow Wallet Access
@@ -524,9 +528,25 @@
 
     <main class="max-w-7xl mx-auto sm:py-16 sm:px-6 lg:px-8">
         <div class="max-w-2xl mx-auto lg:max-w-none">
-            <!-- Product -->
+            <div v-show="accountNeedsUnlock" id="unlock_wallet" class="-mt-8 mb-8 bg-yellow-200 shadow sm:rounded-lg" v-cloak>
+                <div class="px-4 py-5 sm:p-6">
+                    <h3 class="text-xl leading-6 font-medium text-gray-900">
+                        Allow Access to your Wallet
+                    </h3>
+                    <div class="mt-2 max-w-xl text-sm text-gray-800">
+                        <p>
+                            In order to use this page you must allow access to your wallet.
+                        </p>
+                    </div>
+                    <div class="mt-5">
+                        <button onclick='Cryptopunks.requestMetamaskAccess();' type="button" class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm">
+                            Allow Access
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div class="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
-                <!-- Image gallery -->
                 <div class="flex flex-col-reverse">
                     <div class="w-full aspect-w-1 aspect-h-1">
                         <!-- Tab panel, show/hide based on tab state. -->
@@ -782,7 +802,7 @@
             </div>
 
             <div class="border-t border-gray-100 py-10 text-center">
-                <p class="text-sm text-gray-500">&copy; 2021 Cryptopunks Foundation, All rights reserved.</p>
+                <p class="text-sm text-gray-500">&copy; 2021 Cryptopunks Market, All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -875,9 +895,12 @@
                 document.removeEventListener('keydown', this._keyListener);
             },
             computed: {
+                walletIsAvailable: function () {
+                    return this.state.accountQueried && !this.state.web3NotPresent && !this.state.web3UsingRemoteWeb3;
+                },
                 accountNeedsUnlock: function () {
                     if (!this.state.accountQueried) return false;
-                    return !this.state.accountUnlocked && !this.state.web3NotPresent;
+                    return !this.state.accountUnlocked && this.walletIsAvailable;
                 },
                 accountIsUnlocked: function () {
                     return this.state.accountQueried && this.state.account != null && this.state.account !== '';
