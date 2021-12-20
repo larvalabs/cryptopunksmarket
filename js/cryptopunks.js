@@ -327,30 +327,39 @@ var startApp = function () {
             cryptopunksContractLoadedCallback();
         }
 
-        var accountInterval = setInterval(function() {
-            web3.eth.getAccounts(function(err, accounts) {
-                // console.log(accounts);
-                if (accounts[0] !== Cryptopunks.PunkState.account) {
-                    console.log("Metamask account changed: "+accounts[0]);
-                    Cryptopunks.PunkState.account = accounts[0];
-                    web3.eth.defaultAccount = accounts[0];
-                    Cryptopunks.punkContract.defaultAccount = accounts[0];
-                    if (Cryptopunks.PunkState.account === undefined) {
-                        Cryptopunks.PunkState.accountUnlocked = false;
-                    } else {
-                        Cryptopunks.refreshPendingWidthdrawals();
-                        // Cryptopunks.showPunkActions(${punkIndex});
+        function handleAccountsChanged(accounts) {
+            // console.log(accounts);
+            if (accounts[0] !== Cryptopunks.PunkState.account) {
+                console.log("Metamask account changed: "+accounts[0]);
+                Cryptopunks.PunkState.account = accounts[0];
+                web3.eth.defaultAccount = accounts[0];
+                Cryptopunks.punkContract.defaultAccount = accounts[0];
+                if (Cryptopunks.PunkState.account === undefined) {
+                    Cryptopunks.PunkState.accountUnlocked = false;
+                } else {
+                    Cryptopunks.refreshPendingWidthdrawals();
+                    // Cryptopunks.showPunkActions(${punkIndex});
 
-                        Cryptopunks.PunkState.accountUnlocked = true;
-                    }
-
-                    if (typeof cryptopunksContractLoadedCallback !== 'undefined') {
-                        cryptopunksContractLoadedCallback();
-                    }
+                    Cryptopunks.PunkState.accountUnlocked = true;
                 }
-                Cryptopunks.PunkState.accountQueried = true;
+
+                if (typeof cryptopunksContractLoadedCallback !== 'undefined') {
+                    cryptopunksContractLoadedCallback();
+                }
+            }
+            Cryptopunks.PunkState.accountQueried = true;
+        }
+
+        if (window.ethereum) {
+            ethereum.on('accountsChanged', handleAccountsChanged);
+
+            // Make an initial single attempt to get the current unlocked account
+            web3.eth.getAccounts(function(err, accounts) {
+                if (!err && accounts) {
+                    handleAccountsChanged(accounts);
+                }
             });
-        }, 100);
+        }
 
         $.get('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD', function(data) {
             Cryptopunks.ETHER_CONVERSION.USD = data.USD;
