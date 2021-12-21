@@ -338,7 +338,6 @@ var startApp = function () {
                     Cryptopunks.PunkState.accountUnlocked = false;
                 } else {
                     Cryptopunks.refreshPendingWidthdrawals();
-                    // Cryptopunks.showPunkActions(${punkIndex});
 
                     Cryptopunks.PunkState.accountUnlocked = true;
                 }
@@ -348,6 +347,10 @@ var startApp = function () {
                 }
             }
             Cryptopunks.PunkState.accountQueried = true;
+
+            if (Cryptopunks.PunkState.punkData.punkIndex >= 0) {
+                Cryptopunks.loadPunkData(Cryptopunks.PunkState.punkData.punkIndex);
+            }
         }
 
         if (window.ethereum) {
@@ -448,7 +451,7 @@ Cryptopunks.loadPunkData = function(index) {
 		if(!error) {
 			console.log("Owner: '" + result + "'");
             Cryptopunks.PunkState.punkData.owner = result;
-			if (address == result) {
+			if (address && result && address.toUpperCase() === result.toUpperCase()) {
 				console.log(" - Is owner!");
 				Cryptopunks.PunkState.isOwner = true;
 			} else {
@@ -470,7 +473,7 @@ Cryptopunks.loadPunkData = function(index) {
                 Cryptopunks.PunkState.punkData.onlySellTo = result[4];
                 console.log("Punk for sale for " + Cryptopunks.PunkState.punkData.offerValue + " to " + Cryptopunks.PunkState.punkData.onlySellTo);
             }
-            if (Cryptopunks.NULL_ADDRESS == result[4] || result[4] == address) {
+            if (Cryptopunks.NULL_ADDRESS === result[4] || (result[4] && address && address.toUpperCase() === result[4].toUpperCase())) {
                 Cryptopunks.PunkState.canBuy = true;
             } else {
                 Cryptopunks.PunkState.canBuy = false;
@@ -486,7 +489,7 @@ Cryptopunks.loadPunkData = function(index) {
     Cryptopunks.punkContract.methods.punkBids(index).call(function(error, result) {
         if(!error) {
             Cryptopunks.PunkState.hasBid = result[0];
-            Cryptopunks.PunkState.ownsBid = result[2] == address;
+            Cryptopunks.PunkState.ownsBid = (result[2] && address && address.toUpperCase() === result[2].toUpperCase());
             if (Cryptopunks.PunkState.hasBid) {
                 Cryptopunks.PunkState.punkData.bidder = result[2];
                 Cryptopunks.PunkState.punkData.bidValue = result[3];

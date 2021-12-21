@@ -914,6 +914,7 @@
             methods: {
                 reloadPunkData: function() {
                     Cryptopunks.loadPunkData(this.punkIndex);
+                    Cryptopunks.refreshPendingWidthdrawals();
                 },
                 resetDialogData: function () {
                     this.bidDialog.bidAmountEther = null;
