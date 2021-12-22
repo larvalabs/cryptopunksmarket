@@ -26,7 +26,7 @@ To improve the durability and maintainability of the code in this project we str
 
 ## Bugs and feature requests
 
-Have a bug or a feature request? Please first read the [issue guidelines](https://github.com/larvalabs/cryptopunksmarket/CONTRIBUTING.md#using-the-issue-tracker) and search for existing and closed issues. If your problem or idea is not addressed yet, [please open a new issue](https://github.com/larvalabs/cryptopunksmarket/issues/new).
+Have a bug or a feature request? Please first search for existing and closed issues. If your problem or idea is not addressed yet, [please open a new issue](https://github.com/larvalabs/cryptopunksmarket/issues/new).
 
 ## Acknowledgements
 
