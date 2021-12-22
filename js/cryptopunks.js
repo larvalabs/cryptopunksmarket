@@ -15,6 +15,7 @@ Cryptopunks.PunkState = {
     web3ready: false,
     web3UsingRemoteWeb3: false,
     web3NotPresent: false,
+    isTestnet: false,
     accountQueried: false,
     accountUnlocked: false,
     account: null,
@@ -269,14 +270,8 @@ Vue.component('value-display', {
 //
 // Cryptopunks related functions and app startup
 //
-Cryptopunks.init = function(punkContractAddress, ethereumUrl, testnet) {
+Cryptopunks.init = function() {
     console.log("Cryptopunks Market init...");
-
-    Cryptopunks.PUNK_CONTRACT_ADDRESS = punkContractAddress;
-
-    if (testnet) {
-        Project3.state.isTestnet = true;
-    }
 
     // Modern dapp browsers...
     if (window.ethereum) {
@@ -292,31 +287,34 @@ Cryptopunks.init = function(punkContractAddress, ethereumUrl, testnet) {
         window.web3 = web3;
     } else {
         console.log("- Didn't find web3, using remote web3.");
-        // web3 = null;
-        // Project3.state.web3NotPresent = true;
-        // console.log('No web3? You should consider trying MetaMask!')
-        // console.log("Jquery width: " + width);
-        // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
-        if (ethereumUrl) {
-            window.web3 = new Web3(new Web3.providers.HttpProvider(ethereumUrl));
-            Cryptopunks.PunkState.web3UsingRemoteWeb3 = true;
-        } else {
-            web3 = null;
-            Cryptopunks.PunkState.web3NotPresent = true;
-        }
+        window.web3 = new Web3(new Web3.providers.HttpProvider("https://eth-mainnet.alchemyapi.io/v2/N60iHye4vevFlWiz_HUhTWYqRQOBcoKt"));
+        Cryptopunks.PunkState.web3UsingRemoteWeb3 = true;
     }
     Cryptopunks.PunkState.web3Queried = true;
 
-    startApp();
+    Cryptopunks.PUNK_CONTRACT_ADDRESS = "0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB";
+    Cryptopunks.PunkState.isTestnet = false;
+
+    // Check if running on Ropsten
+    if (web3) {
+        web3.eth.getChainId().then(function (chainId) {
+            if (chainId === 3) {
+                console.log("Connected to Ropsten, using testnet.")
+                Cryptopunks.PUNK_CONTRACT_ADDRESS = "0xc8b7a7939a132b9aadf7c6813e78906973c2d48b";
+                Cryptopunks.PunkState.isTestnet = true;
+            }
+            startApp();
+        });
+    } else {
+        startApp();
+    }
+
 }
 
 var startApp = function () {
 
 	if (web3) {
 		console.log("Found web3.");
-		// var contractAddress = "0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB";
-		// var MyContract = web3.eth.contract(Cryptopunks.ABI);
-        // Cryptopunks.punkContract = MyContract.at(Cryptopunks.PUNK_CONTRACT_ADDRESS);
 
         var PunkContract = new web3.eth.Contract(Cryptopunks.ABI, Cryptopunks.PUNK_CONTRACT_ADDRESS);
         console.log("Loading Cryptopunks contract with address: " + Cryptopunks.PUNK_CONTRACT_ADDRESS);

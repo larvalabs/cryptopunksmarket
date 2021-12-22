@@ -464,8 +464,11 @@
     </div>
 
     <header class="relative bg-white">
-        <p class="bg-blue-600 py-2 flex items-center justify-center text-sm font-medium text-white px-4 sm:px-6 lg:px-8">
+        <p v-show="!state.isTestnet" class="bg-blue-600 py-2 flex items-center justify-center text-sm font-medium text-white px-4 sm:px-6 lg:px-8">
             This Cryptopunks market interface is an open source community product currently in BETA - Please confirm transaction values and use at your own risk
+        </p>
+        <p v-show="state.isTestnet" class="bg-yellow-400 py-2 flex items-center justify-center text-sm font-medium text-white px-4 sm:px-6 lg:px-8">
+            ** Currently Connected to TestNet **
         </p>
 
         <nav aria-label="Top" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -739,7 +742,6 @@
 
     window.addEventListener('DOMContentLoaded', function() {
         const queryString = window.location.search;
-        console.log(queryString);
         const urlParams = new URLSearchParams(queryString);
         console.log("Punk index param: " + urlParams.get("index"));
 
@@ -751,8 +753,7 @@
             Cryptopunks.loadPunkData(punkIndexParam);
         }
 
-        // Cryptopunks.init("0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB", "https://eth-mainnet.alchemyapi.io/v2/N60iHye4vevFlWiz_HUhTWYqRQOBcoKt", false);
-        Cryptopunks.init("0xc8b7a7939a132b9aadf7c6813e78906973c2d48b", "https://eth-ropsten.alchemyapi.io/v2/k_uLR5Wok6C_Q7jRiOY_humBah6ceBlu", false);
+        Cryptopunks.init();
     });
 
     window.addEventListener('load', function() {

@@ -1,6 +1,6 @@
 ## Cryptopunks Market
 
-This is an open source, single page application to enable transactions of [The Cryptopunks](https://larvaclabs.com/cryptopunks). The latest build is available for use at [cryptopunks.market](https://cryptopunks.market).
+This is an open source, single page decentralized market for [The Cryptopunks](https://larvalabs.com/cryptopunks). The latest build is available for use at [cryptopunks.market](https://cryptopunks.market).
 
 ![Market Screenshot](img/market-screenshot.png)
 
