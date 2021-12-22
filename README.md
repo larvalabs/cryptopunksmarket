@@ -4,13 +4,6 @@ This is an open source, single page application to enable transactions of [The C
 
 ![Market Screenshot](img/market-screenshot.png)
 
-## Table of contents
-
-- [Overview](#overview)
-- [Usage](#usage)
-- [Bugs and feature requests](#bugs-and-feature-requests)
-- [Acknowledgements](#acknowledgements)
-
 ## Overview
 
 The Cryptopunks are an (almost) 5 year old experiment in generative art and decentralized digital ownership. The [smart contract](https://etherscan.io/address/0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb#code) that defines ownership of the punks also includes a decentralized marketplace that charges no transaction fees. This smart contract can never be updated or modified by anyone, including the original developers. This project is an interface into that marketplace that ensures the Cryptopunks will always have an open, zero fee, method of transaction with no reliance on any person or corporate entity.
