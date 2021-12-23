@@ -24,6 +24,7 @@ window.addEventListener('load', function () {
             punkIndex: punkIndexParam,
             ownerAddress: '',
             dialogState: {
+                showTerms: false,
                 showWithdrawAccountBalance: false,
                 showOfferForSale: false,
                 showRemoveFromSale: false,
@@ -172,6 +173,18 @@ window.addEventListener('load', function () {
             },
         },
         methods: {
+            showTermsOrUnlockWallet: function () {
+                if (this.state.agreedToTerms) {
+                    Cryptopunks.requestMetamaskAccess();
+                } else {
+                    this.dialogState.showTerms = true;
+                }
+            },
+            agreedToTerms: function () {
+                this.closeDialogs();
+                this.state.agreedToTerms = true;
+                Cryptopunks.requestMetamaskAccess();
+            },
             reloadPunkData: function () {
                 Cryptopunks.loadPunkData(this.punkIndex);
                 Cryptopunks.refreshPendingWidthdrawals();
@@ -203,6 +216,7 @@ window.addEventListener('load', function () {
                 this.transaction.completedSuccessfully = false;
             },
             closeDialogs: function () {
+                this.dialogState.showTerms = false;
                 this.dialogState.showWithdrawAccountBalance = false;
                 this.dialogState.showOfferForSale = false;
                 this.dialogState.showRemoveFromSale = false;

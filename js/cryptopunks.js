@@ -10,7 +10,7 @@ Cryptopunks.currentPunkIndex = -1;
 Cryptopunks.gasPrice = 40 * 1000000001;
 
 Cryptopunks.PunkState = {
-    agreedToTermsStatus: 0, // 0 = not yet agreed, 1 = agreed, 2 = denied
+    agreedToTerms: false,
 	web3Queried: false,
     web3ready: false,
     web3UsingRemoteWeb3: false,

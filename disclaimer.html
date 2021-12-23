@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="css/typography-0.5.0.min.css" rel="stylesheet">
+    <link href="css/forms-0.4.0.min.css" rel="stylesheet">
+    <link href="css/tailwind-2.2.19.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/vue-2.6.14.js"></script>
+    <script src="js/web3-1.6.1.min.js"></script>
+    <script src="js/cryptopunks.js"></script>
+    <script src="js/page.js"></script>
+</head>
+<body>
+
+<div id="main_content" class="bg-white">
+    <header class="relative bg-white">
+
+        <nav aria-label="Top" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="border-b border-gray-200">
+                <div class="h-16 flex items-center justify-between">
+
+                    <!-- Logo -->
+                    <a href="index.html" class="flex">
+                        <span class="sr-only">Cryptopunks Market</span>
+                        <h1 class="text-xl font-extrabold tracking-tight text-gray-900">Cryptopunks Market<sup class="text-sm text-gray-500"> beta</sup></h1>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+    <div class="py-16 xl:py-36 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
+        <div class="max-w-max lg:max-w-7xl mx-auto">
+            <div class="relative z-10 mb-8 md:mb-2 md:px-6">
+                <div class="text-base max-w-prose lg:max-w-none">
+                    <h2 class="leading-6 text-blue-600 font-semibold tracking-wide uppercase">Cryptopunks Market</h2>
+                    <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">Disclaimer</p>
+                </div>
+            </div>
+            <div class="relative">
+                <div class="relative md:bg-white md:p-6">
+                    <div class="lg:grid lg:grid-cols-2 lg:gap-6">
+                        <div class="prose prose-blue prose-lg text-gray-500 lg:max-w-none">
+                            <p>
+                                Disclaimer
+                                Cryptopunks.market (the “Website”) is a decentralized peer-to-peer protocol where you can buy/sell/trade Cryptopunks. Your use of the Website involves various risks, including, but not limited to, losses while digital assets are being supplied to the Website. Before using the Website, you are responsible for doing your own diligence regarding the risks it presents.
+                            </p>
+                        </div>
+                        <div class="mt-6 prose prose-blue prose-lg text-gray-500 lg:mt-0">
+                            <p>
+                                THE WEBSITE IS PROVIDED "AS IS", AT YOUR OWN RISK, AND WITHOUT WARRANTIES OF ANY KIND. Neither us or any developer or entity involved in creating the Website will be liable for any claims or damages whatsoever associated with your use, inability to use, or your interaction with other users of, the Webiste, including any direct, indirect, incidental, special, exemplary, punitive or consequential damages, or loss of profits, cryptocurrencies, tokens, or anything else of value.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mt-8 inline-flex rounded-md shadow">
+                        <a href="index.html" class="flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                            Open App
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        variants: {
+            extend: {
+                opacity: ['disabled'],
+                backgroundColor: ['disabled'],
+                borderColor: ['disabled'],
+                cursor: ['disabled']
+            }
+        }
+    }
+</script>
+</body>
+</html>
