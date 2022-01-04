@@ -1,0 +1,18 @@
+{
+  "name": "cryptopunksmarket",
+  "version": "1.0.0",
+  "description": "An open source interface into the zero fee Cryptopunks market smart contract deployed in 2017.",
+  "main": "index.html",
+  "repository": "git@github.com:larvalabs/cryptopunksmarket.git",
+  "author": "Larva Labs",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "@depay/web3-blockchains": "^4.1.0",
+    "@depay/web3-mock": "^11.1.0",
+    "ethers": "^5.5.2"
+  },
+  "devDependencies": {
+    "cypress": "^9.2.0"
+  }
+}

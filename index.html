@@ -548,7 +548,7 @@
 -->
 
                     <!-- Logo -->
-                    <a href="https://cryptopunks.market" class="flex">
+                    <a href="https://cryptopunks.market" class="flex" data-cy="logo">
                         <span class="sr-only">Cryptopunks Market</span>
                         <h1 class="text-xl font-extrabold tracking-tight text-gray-900">Cryptopunks Market<sup class="text-sm text-gray-500"> beta</sup></h1>
                     </a>
@@ -619,7 +619,7 @@
                     <div class="mt-3">
                         <h2 class="sr-only">Product information</h2>
 <!--                        <p class="text-xl text-gray-900">Male, 4 Attributes</p>-->
-                        <p class="text-xl text-gray-900">Owned by <account-link :account="state.punkData.owner"></account-link></p>
+                        <p class="text-xl text-gray-900" data-cy="owned-by">Owned by <account-link :account="state.punkData.owner"></account-link></p>
                     </div>
 
                     <!-- Market Status -->
@@ -678,7 +678,7 @@
                                 </dd>
 
                                 <div v-show="shouldShowAcceptBidButton" class="mt-5 flex sm:flex-col1">
-                                    <button @click="showAcceptBidDialog()" type="submit" :disabled="!accountIsUnlocked" class="flex-1 bg-blue-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50">Accept Bid</button>
+                                    <button @click="showAcceptBidDialog()" type="submit" :disabled="!accountIsUnlocked" class="flex-1 bg-blue-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50" data-cy="btn-accept-bid">Accept Bid</button>
                                 </div>
                                 <div v-show="shouldShowBidButton" class="mt-5 flex sm:flex-col1">
                                     <button @click="showBidDialog()" :disabled="!accountIsUnlocked" type="submit" class="flex-1 bg-blue-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50">Bid</button>
