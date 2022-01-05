@@ -138,8 +138,10 @@
                                     <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">
                                       Ξ
                                     </span>
-                                        <input v-model="bidDialog.bidAmountEther" type="number" name="bidValueEther" id="bidValueEther" placeholder="0"
-                                               class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300">
+                                        <input v-model="bidDialog.bidAmountEther" type="number" name="bidValueEther"
+                                               id="bidValueEther" placeholder="0"
+                                               class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300"
+                                               data-cy="input-bid-value-ether">
                                     </div>
                                 </div>
                                 <div class="sm:col-span-4">
@@ -577,7 +579,7 @@
                         <a v-show="state.account" href="#" class="p-2 text-blue-600 hover:text-blue-500 lg:ml-4">
                             {{shortAddress}}
                         </a>
-                        <a v-show="state.account && state.accountHasBalance" @click="showWithdrawAccountBalanceDialog()" href="#" class="text-blue-600 hover:text-blue-500 lg:ml-4">
+                        <a v-show="state.account && state.accountHasBalance" @click="showWithdrawAccountBalanceDialog()" href="#" class="text-blue-600 hover:text-blue-500 lg:ml-4" data-cy="btn-withdraw-balance">
                             (Withdraw <value-display :amount-wei="state.accountBalanceInWei" :short="true" :hide-usd="true"></value-display>)
                         </a>
                     </div>
