@@ -301,7 +301,9 @@
                                       Ξ
                                     </span>
                                         <input v-model="offerDialog.offerAmountEther" type="number" name="offerValueEther" id="offerValueEther" placeholder="0"
-                                               class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300">
+                                               class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300"
+                                               data-cy="input-offer-value-ether"
+                                        >
                                     </div>
                                 </div>
                                 <div class="sm:col-span-4">
@@ -320,7 +322,11 @@
                                         Only Allow Punk to Be Bought By Address
                                     </label>
                                     <div class="mt-1 sm:mt-0 sm:col-span-2">
-                                        <input v-model="offerDialog.onlyOfferToAddress" type="text" name="onlyOfferToAddress" placeholder="0x1234..." class="block max-w-lg w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md">
+                                        <input v-model="offerDialog.onlyOfferToAddress" type="text"
+                                               name="onlyOfferToAddress" placeholder="0x1234..."
+                                               class="block max-w-lg w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md"
+                                               data-cy="input-offer-to-address"
+                                        >
                                     </div>
                                 </div>
                                 <div class="sm:col-span-4">
@@ -428,7 +434,7 @@
                                         Address to Transfer Punk To
                                     </label>
                                     <div class="mt-1 sm:mt-0 sm:col-span-2">
-                                        <input v-model="transferDialog.transferToAddress" type="text" name="transferToAddress" placeholder="0x1234..." class="block max-w-lg w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md">
+                                        <input v-model="transferDialog.transferToAddress" type="text" name="transferToAddress" placeholder="0x1234..." class="block max-w-lg w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md" data-cy="input-transfer-to">
                                     </div>
                                 </div>
                                 <div class="sm:col-span-4">
@@ -646,16 +652,16 @@
                                     <span v-show="isPunkNotForSale" v-cloak></span>
                                 </dd>
                                 <div v-show="shouldShowBuyButton" class="mt-5 flex sm:flex-col1">
-                                    <button @click="showBuyDialog()" :disabled="!accountIsUnlocked" type="submit" class="flex-1 bg-blue-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50">Buy</button>
+                                    <button @click="showBuyDialog()" :disabled="!accountIsUnlocked" type="submit" class="flex-1 bg-blue-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50" data-cy="btn-buy">Buy</button>
                                 </div>
                                 <div v-show="shouldShowRemoveFromSaleButton" class="mt-5 flex sm:flex-col1">
-                                    <button @click="showRemoveFromSaleDialog()" type="submit" :disabled="!accountIsUnlocked" class="flex-1 bg-blue-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50">Remove from Sale</button>
+                                    <button @click="showRemoveFromSaleDialog()" type="submit" :disabled="!accountIsUnlocked" class="flex-1 bg-blue-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50" data-cy="btn-remove-from-sale">Remove from Sale</button>
                                 </div>
                                 <div v-show="shouldShowOfferForSaleButton" class="mt-5 flex sm:flex-col1">
-                                    <button @click="showOfferForSaleDialog()" type="submit" :disabled="!accountIsUnlocked" class="flex-1 bg-blue-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50">Offer for Sale</button>
+                                    <button @click="showOfferForSaleDialog()" type="submit" :disabled="!accountIsUnlocked" class="flex-1 bg-blue-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50" data-cy="btn-offer-for-sale">Offer for Sale</button>
                                 </div>
                                 <div v-show="shouldShowTransferButton" class="mt-5 flex sm:flex-col1">
-                                    <button @click="showTransferDialog()" type="submit" :disabled="!accountIsUnlocked" class="flex-1 bg-blue-100 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-blue-700 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50">Transfer</button>
+                                    <button @click="showTransferDialog()" type="submit" :disabled="!accountIsUnlocked" class="flex-1 bg-blue-100 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-blue-700 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50" data-cy="btn-transfer">Transfer</button>
                                 </div>
 
                             </div>
@@ -681,10 +687,10 @@
                                     <button @click="showAcceptBidDialog()" type="submit" :disabled="!accountIsUnlocked" class="flex-1 bg-blue-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50" data-cy="btn-accept-bid">Accept Bid</button>
                                 </div>
                                 <div v-show="shouldShowBidButton" class="mt-5 flex sm:flex-col1">
-                                    <button @click="showBidDialog()" :disabled="!accountIsUnlocked" type="submit" class="flex-1 bg-blue-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50">Bid</button>
+                                    <button @click="showBidDialog()" :disabled="!accountIsUnlocked" type="submit" class="flex-1 bg-blue-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50" data-cy="btn-bid">Bid</button>
                                 </div>
                                 <div v-show="shouldShowWithdrawBidButton" class="mt-5 flex sm:flex-col1">
-                                    <button @click="showWithdrawBidDialog()" type="submit" :disabled="!accountIsUnlocked" class="flex-1 bg-blue-100 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-blue-700 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50">Withdraw Bid</button>
+                                    <button @click="showWithdrawBidDialog()" type="submit" :disabled="!accountIsUnlocked" class="flex-1 bg-blue-100 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-blue-700 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500 sm:w-full disabled:opacity-50" data-cy="btn-withdraw-bid">Withdraw Bid</button>
                                 </div>
                             </div>
                         </dl>
@@ -785,6 +791,14 @@
                 borderColor: ['disabled'],
                 cursor: ['disabled']
             }
+        }
+    }
+
+    if (window.Cypress) {
+        console.log("Setting up Cypress specific error handler to force Vue to throw exceptions.")
+        // Expose Vue errors to Cypress as uncaught exceptions
+        Vue.config.errorHandler = function(err/*, vm, info*/) {
+            setTimeout(() => {throw err})
         }
     }
 </script>
