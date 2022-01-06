@@ -57,17 +57,6 @@ describe('Cryptopunks Market UI and Contract Interaction Tests', ()=> {
             }
         })
 
-        let punksOfferedForSaleMock = mock({
-            blockchain,
-            call: {
-                to: cryptopunksContractAddress,
-                api: cryptopunksABI,
-                method: 'punksOfferedForSale',
-                params: punkIndex,
-                return: [true, 0, userAccount, listPriceValue, '0x0000000000000000000000000000000000000000']
-            }
-        })
-
         let punkBidsMock = mock({
             blockchain,
             call: {
@@ -81,247 +70,78 @@ describe('Cryptopunks Market UI and Contract Interaction Tests', ()=> {
 
     })
 
-    it('Can accept bid and correct minPrice is specified.', () => {
-        // {"blockchain":"ethereum","transaction":{"to":"0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb","api":["PLACE API HERE"],"method":"acceptBidForPunk","params":{"punkIndex":"0","minPrice":"1000000000000000000"}}}"
-        let acceptBidTransaction = mock({
+    it('Punk is shown in UI as owned by correct account.', () => {
+        let punksOfferedForSaleMock = mock({
             blockchain,
-            transaction: {
+            call: {
                 to: cryptopunksContractAddress,
                 api: cryptopunksABI,
-                method: 'acceptBidForPunk',
-                params: {
-                    punkIndex: punkIndex,
-                    minPrice: bidValue
-                }
+                method: 'punksOfferedForSale',
+                params: punkIndex,
+                return: [true, 0, userAccount, listPriceValue, '0x0000000000000000000000000000000000000000']
             }
         })
 
         cy.visit('/')
 
-        cy.get('[data-cy=btn-accept-bid]').should('be.visible')
-        cy.get('[data-cy=btn-accept-bid]').click()
-        // cy.get('[data-cy=btn-dialog-confirm]').should('be.visible')
-        cy.get('[data-cy=btn-dialog-confirm]').filter(':visible').click()
+        cy.get('[data-cy=owned-by]').should('be.visible')
+        cy.get('[data-cy=owned-by]').should('have.text', 'Owned by 0xAaAAAA', {timeout: 60000})
     })
 
-    it('Can remove from sale.', () => {
-        let mockTransaction = mock({
+    it('Punk is shown listed for sale to anyone for correct amount.', () => {
+        let punksOfferedForSaleMock = mock({
             blockchain,
-            transaction: {
+            call: {
                 to: cryptopunksContractAddress,
                 api: cryptopunksABI,
-                method: 'punkNoLongerForSale',
-                params: {
-                    punkIndex: punkIndex,
-                }
+                method: 'punksOfferedForSale',
+                params: punkIndex,
+                return: [true, 0, userAccount, listPriceValue, '0x0000000000000000000000000000000000000000']
             }
         })
 
         cy.visit('/')
 
-        cy.get('[data-cy=btn-remove-from-sale]').should('be.visible')
-        cy.get('[data-cy=btn-remove-from-sale]').click()
-        cy.get('[data-cy=btn-dialog-confirm]').filter(':visible').click()
+        cy.get('[data-cy=span-offered-anyone]').should('be.visible')
+        cy.get('[data-cy=span-offered-price]').should('contain.text', '9 Ξ')
     })
 
-    //
-    // Transfer tests
-    //
-
-    it('Can not transfer to partial address.', () => {
-        cy.visit('/')
-
-        cy.get('[data-cy=btn-transfer]').should('be.visible')
-        cy.get('[data-cy=btn-transfer]').click()
-
-        cy.get('[data-cy=input-transfer-to]').type(transferRecipientAccount.substring(0, transferRecipientAccount.length-1))
-        cy.get('[data-cy=btn-dialog-confirm]').filter(':visible').should('be.disabled')
-    })
-
-    it('Can not transfer to address with extra characters.', () => {
-        cy.visit('/')
-
-        cy.get('[data-cy=btn-transfer]').should('be.visible')
-        cy.get('[data-cy=btn-transfer]').click()
-
-        cy.get('[data-cy=input-transfer-to]').type(transferRecipientAccount+"1")
-        cy.get('[data-cy=btn-dialog-confirm]').filter(':visible').should('be.disabled')
-    })
-
-    it('Can not transfer to zero address.', () => {
-        cy.visit('/')
-
-        cy.get('[data-cy=btn-transfer]').should('be.visible')
-        cy.get('[data-cy=btn-transfer]').click()
-
-        cy.get('[data-cy=input-transfer-to]').type(zeroAccount)
-        cy.get('[data-cy=btn-dialog-confirm]').filter(':visible').should('be.disabled')
-    })
-
-    it('Can not transfer to just 0.', () => {
-        cy.visit('/')
-
-        cy.get('[data-cy=btn-transfer]').should('be.visible')
-        cy.get('[data-cy=btn-transfer]').click()
-
-        cy.get('[data-cy=input-transfer-to]').type('0')
-        cy.get('[data-cy=btn-dialog-confirm]').filter(':visible').should('be.disabled')
-    })
-
-    it('Can transfer to valid recipient.', () => {
-        // {"blockchain":"ethereum","transaction":{"to":"0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb","api":["PLACE API HERE"],"method":"acceptBidForPunk","params":{"punkIndex":"0","minPrice":"1000000000000000000"}}}"
-        let mockTransaction = mock({
+    it('Punk is shown listed for sale to specific account for correct amount.', () => {
+        let punksOfferedForSaleMock = mock({
             blockchain,
-            transaction: {
+            call: {
                 to: cryptopunksContractAddress,
                 api: cryptopunksABI,
-                method: 'transferPunk',
-                params: {
-                    to: transferRecipientAccount,
-                    punkIndex: punkIndex,
-                }
+                method: 'punksOfferedForSale',
+                params: punkIndex,
+                return: [true, 0, userAccount, listPriceValue, bidderAccount]
             }
         })
 
         cy.visit('/')
 
-        cy.get('[data-cy=btn-transfer]').should('be.visible')
-        cy.get('[data-cy=btn-transfer]').click()
-        cy.get('[data-cy=input-transfer-to]').type(transferRecipientAccount)
-        cy.get('[data-cy=btn-dialog-confirm]').filter(':visible').click()
+        cy.get('[data-cy=span-offered-to-specific]').should('be.visible')
+        cy.get('[data-cy=span-offered-to-specific]').should('contain.text', 'Offered for sale to 0xbbBBBB')
+        cy.get('[data-cy=span-offered-price]').should('contain.text', '9 Ξ')
     })
 
-    //
-    // Offer for Sale tests
-    //
-
-    it('Can not offer for empty amount.', () => {
-        cy.visit('/')
-
-        cy.get('[data-cy=btn-offer-for-sale]').should('be.visible')
-        cy.get('[data-cy=btn-offer-for-sale]').click()
-
-        cy.get('[data-cy=btn-dialog-confirm]').filter(':visible').should('be.disabled')
-    })
-
-    it('Can not offer to specific address for empty amount.', () => {
-        cy.visit('/')
-
-        cy.get('[data-cy=btn-offer-for-sale]').should('be.visible')
-        cy.get('[data-cy=btn-offer-for-sale]').click()
-
-        cy.get('[data-cy=input-offer-to-address]').type(offerToSaleRecipientAccount)
-        cy.get('[data-cy=btn-dialog-confirm]').filter(':visible').should('be.disabled')
-    })
-
-    it('Can not offer for zero.', () => {
-        cy.visit('/')
-
-        cy.get('[data-cy=btn-offer-for-sale]').should('be.visible')
-        cy.get('[data-cy=btn-offer-for-sale]').click()
-
-        cy.get('[data-cy=input-offer-value-ether]').type(0)
-        cy.get('[data-cy=btn-dialog-confirm]').filter(':visible').should('be.disabled')
-    })
-
-    it('Can not offer for sale to partial address.', () => {
-        cy.visit('/')
-
-        cy.get('[data-cy=btn-offer-for-sale]').should('be.visible')
-        cy.get('[data-cy=btn-offer-for-sale]').click()
-
-        cy.get('[data-cy=input-offer-value-ether]').type(1)
-        cy.get('[data-cy=input-offer-to-address]').type(offerToSaleRecipientAccount.substring(0, offerToSaleRecipientAccount.length-1))
-        cy.get('[data-cy=btn-dialog-confirm]').filter(':visible').should('be.disabled')
-    })
-
-    it('Can not offer to address with extra characters.', () => {
-        cy.visit('/')
-
-        cy.get('[data-cy=btn-offer-for-sale]').should('be.visible')
-        cy.get('[data-cy=btn-offer-for-sale]').click()
-
-        cy.get('[data-cy=input-offer-value-ether]').type(1)
-        cy.get('[data-cy=input-offer-to-address]').type(offerToSaleRecipientAccount+'1')
-        cy.get('[data-cy=btn-dialog-confirm]').filter(':visible').should('be.disabled')
-    })
-
-    it('Can not offer to zero address with extra characters.', () => {
-        cy.visit('/')
-
-        cy.get('[data-cy=btn-offer-for-sale]').should('be.visible')
-        cy.get('[data-cy=btn-offer-for-sale]').click()
-
-        cy.get('[data-cy=input-offer-value-ether]').type(1)
-        cy.get('[data-cy=input-offer-to-address]').type(zeroAccount)
-        cy.get('[data-cy=btn-dialog-confirm]').filter(':visible').should('be.disabled')
-    })
-
-    it('Offer for sale to anyone produces correct transaction.', () => {
-        let mockTransaction = mock({
+    it('Punk is shown with bid from correct address with correct amount.', () => {
+        let punksOfferedForSaleMock = mock({
             blockchain,
-            transaction: {
+            call: {
                 to: cryptopunksContractAddress,
                 api: cryptopunksABI,
-                method: 'offerPunkForSale',
-                params: {
-                    punkIndex: punkIndex,
-                    minSalePriceInWei: '7000000000000000000',
-                }
+                method: 'punksOfferedForSale',
+                params: punkIndex,
+                return: [true, 0, userAccount, listPriceValue, bidderAccount]
             }
         })
 
         cy.visit('/')
 
-        cy.get('[data-cy=btn-offer-for-sale]').should('be.visible')
-        cy.get('[data-cy=btn-offer-for-sale]').click()
-
-        cy.get('[data-cy=input-offer-value-ether]').type(7)
-        cy.get('[data-cy=btn-dialog-confirm]').filter(':visible').click()
+        cy.get('[data-cy=span-bid-account]').should('be.visible')
+        cy.get('[data-cy=span-bid-account]').should('contain.text', 'Bid placed by 0xbbBBBB')
+        cy.get('[data-cy=span-bid-value]').should('contain.text', '1 Ξ')
     })
-
-    it('Offer for sale only to specific address produces correct transaction.', () => {
-        let mockTransaction = mock({
-            blockchain,
-            transaction: {
-                to: cryptopunksContractAddress,
-                api: cryptopunksABI,
-                method: 'offerPunkForSaleToAddress',
-                params: {
-                    punkIndex: punkIndex,
-                    minSalePriceInWei: '8000000000000000000',
-                    toAddress: offerToSaleRecipientAccount,
-                }
-            }
-        })
-
-        cy.visit('/')
-
-        cy.get('[data-cy=btn-offer-for-sale]').should('be.visible')
-        cy.get('[data-cy=btn-offer-for-sale]').click()
-
-        cy.get('[data-cy=input-offer-value-ether]').type(8)
-        cy.get('[data-cy=input-offer-to-address]').type(offerToSaleRecipientAccount)
-        cy.get('[data-cy=btn-dialog-confirm]').filter(':visible').click()
-    })
-
-    it('Can withdraw account balance.', () => {
-        let mockTransaction = mock({
-            blockchain,
-            transaction: {
-                to: cryptopunksContractAddress,
-                api: cryptopunksABI,
-                method: 'withdraw',
-            }
-        })
-
-        cy.visit('/')
-
-        cy.get('[data-cy=btn-withdraw-balance]').should('be.visible')
-        cy.get('[data-cy=btn-withdraw-balance]').click()
-
-        cy.get('[data-cy=btn-dialog-confirm]').filter(':visible').click()
-    })
-
 
 })

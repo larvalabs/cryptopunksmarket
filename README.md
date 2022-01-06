@@ -1,6 +1,6 @@
 ## Cryptopunks Market
 
-[![Cryptopunks Market](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/beem87&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/beem87/runs)
+[![Cryptopunks Market](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/detailed/beem87&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/beem87/runs)
 [![LarvaLabs](https://circleci.com/gh/larvalabs/cryptopunksmarket.svg?style=shield)](https://circleci.com/gh/larvalabs/cryptopunksmarket)
 
 This is an open source, single page decentralized market for [The Cryptopunks](https://larvalabs.com/cryptopunks). The latest build is available for use at [cryptopunks.market](https://cryptopunks.market).

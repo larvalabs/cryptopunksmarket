@@ -644,13 +644,13 @@
                                         </svg>
                                     </span>
                                     <span class="mt-4 text-sm font-medium text-gray-900">
-                                        <span v-show="isPunkForSaleToAnyone" v-cloak>Offered for Sale by Owner</span>
-                                        <span v-show="isPunkForSaleToSpecificAddress" v-cloak>Offered for sale to <account-link :account="state.punkData.onlySellTo"></account-link></span>
+                                        <span v-show="isPunkForSaleToAnyone" data-cy="span-offered-anyone" v-cloak>Offered for Sale by Owner</span>
+                                        <span v-show="isPunkForSaleToSpecificAddress" data-cy="span-offered-to-specific" v-cloak>Offered for sale to <account-link :account="state.punkData.onlySellTo"></account-link></span>
                                         <span v-show="isPunkNotForSale" v-cloak>Not Currently Listed for Sale</span>
                                     </span>
                                 </dt>
                                 <dd class="mt-1 text-xl text-gray-900 font-semibold">
-                                    <span v-show="isPunkForSaleToAnyone || isPunkForSaleToSpecificAddress" v-cloak><value-display :amount-wei="state.punkData.offerValue" :short="true"></value-display></span>
+                                    <span v-show="isPunkForSaleToAnyone || isPunkForSaleToSpecificAddress" v-cloak><value-display :amount-wei="state.punkData.offerValue" :short="true" data-cy="span-offered-price"></value-display></span>
                                     <span v-show="isPunkNotForSale" v-cloak></span>
                                 </dd>
                                 <div v-show="shouldShowBuyButton" class="mt-5 flex sm:flex-col1">
@@ -676,12 +676,12 @@
                                         </svg>
                                     </span>
                                     <span class="mt-4 text-sm font-medium text-gray-900">
-                                        <span v-if="doesPunkHaveBid" v-cloak>Bid placed by <account-link :account="state.punkData.bidder"></account-link></span>
+                                        <span v-if="doesPunkHaveBid" v-cloak data-cy="span-bid-account">Bid placed by <account-link :account="state.punkData.bidder"></account-link></span>
                                         <span v-else v-cloak>No Current Bids</span>
                                     </span>
                                 </dt>
                                 <dd class="mt-1 text-xl text-gray-900 font-semibold">
-                                    <span v-if="doesPunkHaveBid" v-cloak><value-display :amount-wei="state.punkData.bidValue" :short="true"></value-display></span>
+                                    <span v-if="doesPunkHaveBid" v-cloak data-cy="span-bid-value"><value-display :amount-wei="state.punkData.bidValue" :short="true"></value-display></span>
                                     <span v-else v-cloak></span>
                                 </dd>
 
