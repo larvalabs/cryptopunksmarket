@@ -6,3 +6,4 @@ workflows:
     jobs:
       - cypress/run:
           yarn: true
+          record: true
