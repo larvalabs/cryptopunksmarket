@@ -1,5 +1,8 @@
 ## Cryptopunks Market
 
+[![Cryptopunks Market](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/beem87&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/beem87/runs)
+[![LarvaLabs](https://circleci.com/gh/larvalabs/cryptopunksmarket.svg?style=shield)](https://circleci.com/gh/larvalabs/cryptopunksmarket)
+
 This is an open source, single page decentralized market for [The Cryptopunks](https://larvalabs.com/cryptopunks). The latest build is available for use at [cryptopunks.market](https://cryptopunks.market).
 
 ![Market Screenshot](img/market-screenshot.png)
@@ -34,4 +37,5 @@ This project makes use of the following open source projects, thank you to their
 
 - [Web3.js](https://github.com/ChainSafe/web3.js)
 - [Vue.js](https://github.com/vuejs/vue)
+- [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss)
 - [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss)
