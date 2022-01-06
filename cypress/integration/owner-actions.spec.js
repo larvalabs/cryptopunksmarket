@@ -119,7 +119,9 @@ describe('Cryptopunks Market UI and Contract Interaction Tests', ()=> {
                 to: cryptopunksContractAddress,
                 api: cryptopunksABI,
                 method: 'punkNoLongerForSale',
-                params: punkIndex,
+                params: {
+                    punkIndex: punkIndex,
+                }
             }
         })
 

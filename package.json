@@ -9,7 +9,7 @@
   "private": false,
   "dependencies": {
     "@depay/web3-blockchains": "^4.1.0",
-    "@depay/web3-mock": "^11.2.0",
+    "@depay/web3-mock": "^11.2.1",
     "ethers": "^5.5.2"
   },
   "devDependencies": {

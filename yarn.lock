@@ -39,10 +39,10 @@
   resolved "https://registry.yarnpkg.com/@depay/web3-blockchains/-/web3-blockchains-4.1.0.tgz#9000a878abd70613c5e5b07cf9a254385de23b09"
   integrity sha512-HN8acedRZJ8HVQDtV0Wa9egHBuoG4It5u2nVnFJfSCx82mI9T5qnDjQocAB26V3692sKr9Wdg9HC8RGbwby3DQ==
 
-"@depay/web3-mock@^11.2.0":
-  version "11.2.0"
-  resolved "https://registry.yarnpkg.com/@depay/web3-mock/-/web3-mock-11.2.0.tgz#3bdf516467bcbfce5640a21daeea8cf76f49bd4c"
-  integrity sha512-RA91wA2eQEnMGm0VzzloISg0dtLgDzOcvgX488YiA0SjhFIAritAS8waZC9dlB2AhzlTHPYnUuouyRcHS/99mA==
+"@depay/web3-mock@^11.2.1":
+  version "11.2.1"
+  resolved "https://registry.yarnpkg.com/@depay/web3-mock/-/web3-mock-11.2.1.tgz#a0ce972ea56415e12613908cd7f2c76b20edec4d"
+  integrity sha512-Pr1Js1JqV14/ewXiVtclwsYt+1yWO9NyV4CqVPXlgEZJPl0MhaPYmeBvXdLHqDkFgpxJ636CWL/Eomu7sct6Uw==
 
 "@ethersproject/abi@5.5.0", "@ethersproject/abi@^5.5.0":
   version "5.5.0"

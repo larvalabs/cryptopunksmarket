@@ -81,14 +81,6 @@ describe('Cryptopunks Market UI and Contract Interaction Tests', ()=> {
 
     })
 
-    it('Punk is shown in UI as owned by correct account.', () => {
-        cy.visit('/')
-
-        cy.get('[data-cy=logo]').should('have.length', 1)
-        cy.get('[data-cy=owned-by]').should('be.visible')
-        cy.get('[data-cy=owned-by]').should('have.text', 'Owned by 0xAaAAAA', {timeout: 60000})
-    })
-
     it('Can place bid and correct value is specified.', () => {
         let punkBidsMock = mock({
             blockchain,
@@ -108,7 +100,7 @@ describe('Cryptopunks Market UI and Contract Interaction Tests', ()=> {
                 api: cryptopunksABI,
                 method: 'enterBidForPunk',
                 params: punkIndex,
-                value: '9000000000000000000'    // todo this value not yet being checked by mock
+                value: '9000000000000000000'
             }
         })
 
@@ -169,8 +161,10 @@ describe('Cryptopunks Market UI and Contract Interaction Tests', ()=> {
                 to: cryptopunksContractAddress,
                 api: cryptopunksABI,
                 method: 'buyPunk',
-                params: punkIndex,
-                value: listPriceValue    // todo this value not yet being checked by mock
+                params: {
+                    punkIndex: punkIndex,
+                },
+                value: listPriceValue
             }
         })
 
@@ -181,6 +175,5 @@ describe('Cryptopunks Market UI and Contract Interaction Tests', ()=> {
 
         cy.get('[data-cy=btn-dialog-confirm]').filter(':visible').click()
     })
-
 
 })
