@@ -38,4 +38,4 @@ This project makes use of the following open source projects, thank you to their
 - [Web3.js](https://github.com/ChainSafe/web3.js)
 - [Vue.js](https://github.com/vuejs/vue)
 - [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss)
-- [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss)
+- [Web3 Mock](https://github.com/DePayFi/web3-mock)
