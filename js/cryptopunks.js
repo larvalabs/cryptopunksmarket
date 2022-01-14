@@ -287,7 +287,7 @@ Cryptopunks.init = function() {
         window.web3 = web3;
     } else {
         console.log("- Didn't find web3, using remote web3.");
-        window.web3 = new Web3(new Web3.providers.HttpProvider("https://eth-mainnet.alchemyapi.io/v2/N60iHye4vevFlWiz_HUhTWYqRQOBcoKt"));
+        window.web3 = new Web3(new Web3.providers.HttpProvider("https://eth-mainnet.alchemyapi.io/v2/EAYlkRqfB1g38-XGPfVqXZJoA_l3ovSR"));
         Cryptopunks.PunkState.web3UsingRemoteWeb3 = true;
     }
     Cryptopunks.PunkState.web3Queried = true;
