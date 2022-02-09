@@ -14,6 +14,7 @@ window.addEventListener('DOMContentLoaded', function () {
     }
 
     Cryptopunks.init();
+    UDomain.init();
 });
 
 window.addEventListener('load', function () {
@@ -178,6 +179,14 @@ window.addEventListener('load', function () {
                     Cryptopunks.requestMetamaskAccess();
                 } else {
                     this.dialogState.showTerms = true;
+                }
+            },
+            uDomainLogin: async function () {
+                try {
+                    const authorization = await uauth.loginWithPopup()
+                    console.log(authorization)
+                } catch (error) {
+                    console.log(error)
                 }
             },
             agreedToTerms: function () {

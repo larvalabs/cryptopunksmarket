@@ -24,7 +24,9 @@
     <script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/vue-2.6.14.js"></script>
     <script src="js/web3-1.6.1.min.js"></script>
+    <script src="js/uauth-js-0.7.9.js"></script>
     <script src="js/cryptopunks.js"></script>
+    <script src="js/udomain.js"></script>
     <script src="js/page.js"></script>
 </head>
 <body>
@@ -573,6 +575,9 @@
                         </a>
 -->
 
+                        <a  @click="uDomainLogin()" href="#" class="p-2 text-blue-600 hover:text-blue-500 lg:ml-4">
+                            Test Unstoppable
+                        </a>
                         <a v-show="accountNeedsUnlock" @click="showTermsOrUnlockWallet()" href="#" class="p-2 text-blue-600 hover:text-blue-500 lg:ml-4">
                             Allow Wallet Access
                         </a>
