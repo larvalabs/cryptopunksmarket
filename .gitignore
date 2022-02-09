@@ -22,3 +22,6 @@ npm-debug.log
 # Environment
 .env.dev
 .env
+
+/dist
+/.parcel-cache
