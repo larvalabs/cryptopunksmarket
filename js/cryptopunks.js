@@ -124,7 +124,7 @@ Vue.component('account-verification-links', {
     props: ['account'],
     template: `
         <div>
-            (<a v-bind:href="\'https://larvalabs.com/cryptopunks/accountInfo?account=\'+account" class="text-blue-600 hover:text-blue-300" target="_blank">View on LarvaLabs.com</a>) 
+            (<a v-bind:href="\'https://larvalabs.com/cryptopunks/accountInfo?account=\'+account" class="text-blue-600 hover:text-blue-300" target="_blank">View on LarvaLabs.com</a>)
             (<a v-bind:href="\'https://etherscan.io/address/\'+account" class="text-blue-600 hover:text-blue-300" target="_blank">View on Etherscan</a>)
         </div>
     `
@@ -325,39 +325,13 @@ var startApp = function () {
             cryptopunksContractLoadedCallback();
         }
 
-        function handleAccountsChanged(accounts) {
-            // console.log(accounts);
-            if (accounts[0] !== Cryptopunks.PunkState.account) {
-                console.log("Metamask account changed: "+accounts[0]);
-                Cryptopunks.PunkState.account = accounts[0];
-                web3.eth.defaultAccount = accounts[0];
-                Cryptopunks.punkContract.defaultAccount = accounts[0];
-                if (Cryptopunks.PunkState.account === undefined) {
-                    Cryptopunks.PunkState.accountUnlocked = false;
-                } else {
-                    Cryptopunks.refreshPendingWidthdrawals();
-
-                    Cryptopunks.PunkState.accountUnlocked = true;
-                }
-
-                if (typeof cryptopunksContractLoadedCallback !== 'undefined') {
-                    cryptopunksContractLoadedCallback();
-                }
-            }
-            Cryptopunks.PunkState.accountQueried = true;
-
-            if (Cryptopunks.PunkState.punkData.punkIndex >= 0) {
-                Cryptopunks.loadPunkData(Cryptopunks.PunkState.punkData.punkIndex);
-            }
-        }
-
         if (window.ethereum) {
-            ethereum.on('accountsChanged', handleAccountsChanged);
+            ethereum.on('accountsChanged', Cryptopunks.handleAccountsChanged);
 
             // Make an initial single attempt to get the current unlocked account
             web3.eth.getAccounts(function(err, accounts) {
                 if (!err && accounts) {
-                    handleAccountsChanged(accounts);
+                    Cryptopunks.handleAccountsChanged(accounts);
                 }
             });
         }
@@ -385,6 +359,31 @@ var startApp = function () {
         })
     }
 };
+
+Cryptopunks.handleAccountsChanged = function(accounts = []) {
+    if (accounts[0] !== Cryptopunks.PunkState.account) {
+        console.log("Metamask account changed: "+accounts[0]);
+        Cryptopunks.PunkState.account = accounts[0];
+        web3.eth.defaultAccount = accounts[0];
+        Cryptopunks.punkContract.defaultAccount = accounts[0];
+        if (Cryptopunks.PunkState.account === undefined) {
+            Cryptopunks.PunkState.accountUnlocked = false;
+        } else {
+            Cryptopunks.refreshPendingWidthdrawals();
+
+            Cryptopunks.PunkState.accountUnlocked = true;
+        }
+
+        if (typeof cryptopunksContractLoadedCallback !== 'undefined') {
+            cryptopunksContractLoadedCallback();
+        }
+    }
+    Cryptopunks.PunkState.accountQueried = true;
+
+    if (Cryptopunks.PunkState.punkData.punkIndex >= 0) {
+        Cryptopunks.loadPunkData(Cryptopunks.PunkState.punkData.punkIndex);
+    }
+}
 
 Cryptopunks.requestMetamaskAccess = async () => {
     try {
