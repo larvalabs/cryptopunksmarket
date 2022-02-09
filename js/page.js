@@ -181,13 +181,18 @@ window.addEventListener('load', function () {
                     this.dialogState.showTerms = true;
                 }
             },
-            uDomainLogin: async function () {
+            uDomainLogin: function () {
                 try {
                     const authorization = await uauth.loginWithPopup()
                     console.log(authorization)
+                    
+                    const account = authorization.idToken.wallet_address;
+                    Cryptopunks.handleAccountsChanged([account]);
+                    Cryptopunks.requestMetamaskAccess();
                 } catch (error) {
                     console.log(error)
                 }
+
             },
             agreedToTerms: function () {
                 this.closeDialogs();
