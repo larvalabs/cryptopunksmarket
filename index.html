@@ -574,13 +574,37 @@
                             </svg>
                         </a>
 -->
-
-                        <a  @click="uDomainLogin()" href="#" class="p-2 text-blue-600 hover:text-blue-500 lg:ml-4">
-                            Test Unstoppable
+                        <a v-show="accountNeedsUnlock" @click="uDomainLogin()" href="#" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            <img src="/img/udomain-logo.png" alt="Unstoppable Integration" style="height: 20px; width: auto;">
+                            &nbsp;Login with Unstoppable
                         </a>
                         <a v-show="accountNeedsUnlock" @click="showTermsOrUnlockWallet()" href="#" class="p-2 text-blue-600 hover:text-blue-500 lg:ml-4">
                             Allow Wallet Access
                         </a>
+                        <div v-show="state.uDomain" class="relative inline-block text-left">
+                            <div>
+                            <a href="#" @click="toggleUDomainMenu()" class="inline-flex justify-center w-full rounded-md border border-blue-600 shadow-sm px-4 py-2 bg-blue-600 text-sm font-medium text-white hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" id="menu-button" aria-expanded="true" aria-haspopup="true">
+                                {{uDomainAdress}}
+                                <!-- Heroicon name: solid/chevron-down -->
+                                <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </a>
+                            </div>
+
+                            <div v-show="uDomainShowMenu" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                                <div class="py-1" role="none" v-bind:class="[isUDomainLoading ? 'bg-gray-200' : '']">
+                                    <a  href="#"
+                                        v-bind:class="[isUDomainLoading ? 'text-gray-400' : 'text-gray-700']"
+                                        class="block w-full text-left px-4 py-2 text-sm"
+                                        role="menuitem" tabindex="-1" id="menu-item-3"
+                                        :disabled="isUDomainLoading"
+                                        @click="uDomainLogout()">
+                                        Sign Out
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                         <a v-show="state.account" href="#" class="p-2 text-blue-600 hover:text-blue-500 lg:ml-4">
                             {{shortAddress}}
                         </a>

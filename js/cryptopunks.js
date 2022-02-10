@@ -30,6 +30,7 @@ Cryptopunks.PunkState = {
     forSale: false,
     hasBid: false,
     ownsBid: false,
+    uDomain: null,
     punkData: {
 	    loadComplete: false,
 	    punkIndex: -1,
@@ -702,6 +703,10 @@ Cryptopunks.createTestTransaction = function () {
 Cryptopunks.signMessage = function(msg) {
     signMsgPersonal(msg, Cryptopunks.PunkState.account);
     // signMsg(msgParams, Cryptopunks.PunkState.account);
+}
+
+Cryptopunks.setUDomainAddress = function(address = null) {
+    Cryptopunks.PunkState.uDomain = address;
 }
 
 function signMsgPersonal(msg, from) {

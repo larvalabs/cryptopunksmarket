@@ -49,6 +49,10 @@ window.addEventListener('load', function () {
                 inProgress: false,
                 errorMessage: null,
                 completedSuccessfully: false,
+            },
+            uDomainState: {
+                showMenu: false,
+                loading: false,
             }
         },
         created: function () {
@@ -85,6 +89,13 @@ window.addEventListener('load', function () {
                     return this.state.account.substring(0, 10);
                 } else {
                     return "";
+                }
+            },
+            uDomainAdress: function () {
+                if (this.state.uDomain) {
+                    return this.state.uDomain;
+                } else {
+                    return this.shortAddress;
                 }
             },
             zeroPaddedPunkIndex: function () {
@@ -172,6 +183,12 @@ window.addEventListener('load', function () {
                     || this.offerDialog.onlyOfferToAddress === ''
                     || (web3.utils.isAddress(this.offerDialog.onlyOfferToAddress) && !web3.utils.toBN(this.offerDialog.onlyOfferToAddress).isZero());
             },
+            uDomainShowMenu: function () {
+                return this.uDomainState.showMenu;
+            },
+            isUDomainLoading: function () {
+                return this.uDomainState.loading;
+            }
         },
         methods: {
             showTermsOrUnlockWallet: function () {
@@ -181,18 +198,35 @@ window.addEventListener('load', function () {
                     this.dialogState.showTerms = true;
                 }
             },
-            uDomainLogin: function () {
+            uDomainLogin: async function () {
                 try {
+                    this.uDomainState.showMenu = false;
                     const authorization = await uauth.loginWithPopup()
                     console.log(authorization)
-                    
+
                     const account = authorization.idToken.wallet_address;
+                    const domain_address = authorization.idToken.sub;
                     Cryptopunks.handleAccountsChanged([account]);
-                    Cryptopunks.requestMetamaskAccess();
+                    Cryptopunks.setUDomainAddress(domain_address);
+                    // Cryptopunks.requestMetamaskAccess();
                 } catch (error) {
                     console.log(error)
                 }
+            },
+            uDomainLogout: async function() {
+                try {
+                    this.uDomainState.loading = true;
 
+                    const logout = await uauth.logout()
+                    console.log(logout)
+                    Cryptopunks.handleAccountsChanged([]);
+                    Cryptopunks.setUDomainAddress(null);
+                } catch (error) {
+                    console.log(error)
+                } finally {
+                    this.uDomainState.showMenu = false;
+                    this.uDomainState.loading = false;
+                }
             },
             agreedToTerms: function () {
                 this.closeDialogs();
@@ -374,6 +408,11 @@ window.addEventListener('load', function () {
                     self.transactionError(error);
                 });
             },
+            toggleUDomainMenu: function (){
+                var self = this;
+                let current_menu_state = self.uDomainState.showMenu;
+                self.uDomainState.showMenu = !current_menu_state;
+            }
         },
     });
 });
