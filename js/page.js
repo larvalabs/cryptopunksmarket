@@ -208,7 +208,7 @@ window.addEventListener('load', function () {
                     const domain_address = authorization.idToken.sub;
                     Cryptopunks.handleAccountsChanged([account]);
                     Cryptopunks.setUDomainAddress(domain_address);
-                    // Cryptopunks.requestMetamaskAccess();
+                    Cryptopunks.requestMetamaskAccess();
                 } catch (error) {
                     console.log(error)
                 }
